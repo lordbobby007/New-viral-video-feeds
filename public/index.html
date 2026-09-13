@@ -307,7 +307,7 @@ body{font-family:Arial,sans-serif}
   <section class="slide" data-index="274"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
 </div>
 <button id="mute">🔊</button>
-<div id="status" aria-hidden="true" style="display:none">Loading…</div>
+<div id="status" aria-hidden="true" style="display:none" aria-hidden="true" style="display:none">Loading…</div>
 <div id="hint">Swipe up for next video</div>
 <div id="gate">
  <div class="box">
@@ -693,42 +693,42 @@ function startThreeSecondPause(i){
   lastTimedPause=i;
   if(pauseTimer) clearTimeout(pauseTimer);
 
+  // IMPORTANT:
+  // Keep the video playing underneath the 4-second screen pause.
+  // This avoids mobile/Telegram WebView autoplay restrictions that can
+  // prevent a video from resuming after a delayed pause().
   const v=vids[i];
 
-  // Pause the current video while Watch More is visible.
-  try{v.pause()}catch(e){}
-
-  gateOn();
-
-  pauseTimer=setTimeout(()=>{
-    pauseTimer=null;
-    gateOff();
-
-    if(current!==i) return;
-
-    // Resume explicitly after the overlay disappears.
+  if(v){
     v.muted=muted;
     v.loop=true;
     v.playsInline=true;
 
-    const resumeVideo=()=>{
+    const ensurePlaying=()=>{
       if(current!==i) return;
       const p=v.play();
-      if(p && typeof p.catch==='function'){
-        p.catch(()=>{
-          v.muted=true;
-          muted=true;
-          mute.textContent='🔇';
-          v.play().catch(()=>{});
-        });
-      }
+      if(p && typeof p.catch==='function') p.catch(()=>{});
     };
 
-    if(v.readyState>=2){
-      resumeVideo();
-    }else{
-      v.addEventListener('canplay',resumeVideo,{once:true});
-      v.load();
+    ensurePlaying();
+  }
+
+  // Visually pause the screen and show Watch More.
+  gateOn();
+
+  pauseTimer=setTimeout(()=>{
+    pauseTimer=null;
+
+    // Remove the screen pause. The video has remained playing underneath,
+    // so it continues immediately with no autoplay/resume problem.
+    gateOff();
+
+    if(current===i && v){
+      v.muted=muted;
+      v.loop=true;
+      v.playsInline=true;
+      const p=v.play();
+      if(p && typeof p.catch==='function') p.catch(()=>{});
     }
   },4000);
 }
