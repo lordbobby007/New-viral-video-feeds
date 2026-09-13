@@ -522,11 +522,34 @@
     // IMPORTANT: this button is the user click that Monetag Onclick can use.
     // It unlocks the next videos only after the click.
     watchMore.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      hideGate();
+
+      // Unlock the feed immediately on the user's genuine click.
+      // Monetag's Onclick script can handle the popunder from this same click.
+      unlocked = true;
+      gate.classList.remove("show");
 
       const next = currentIndex + 1;
-      if (next < videoUrls.length) loadVideo(next);
+      if (next < videoUrls.length) {
+        // Small delay gives the Onclick script a moment to process
+        // the user's click before the next video starts.
+        setTimeout(() => {
+          loadVideo(next);
+        }, 150);
+      }
+    });
+
+    // If the browser returns from the popunder/new tab, keep the feed unlocked.
+    window.addEventListener("focus", () => {
+      if (unlocked) gate.classList.remove("show");
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && unlocked) {
+        gate.classList.remove("show");
+        video.play().catch(() => {});
+      }
     });
 
     // Phone swipe.
