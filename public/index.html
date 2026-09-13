@@ -624,6 +624,13 @@ let changing=false;
 function checkpoint(i){
   return i===nextGate;
 }
+function needsGate(i){
+  return !unlocked && checkpoint(i);
+}
+function gateOn(){
+  locked=true;
+  gate.classList.add('show');
+}
 function gateOff(){
  locked=false;
  gate.classList.remove('show');
@@ -777,7 +784,7 @@ watch.addEventListener('click',e=>{
   e.preventDefault();
   e.stopPropagation();
 
-  // IMPORTANT: unlock immediately on the button click.
+  // CLICK = UNLOCK. Do not wait for the ad to close.
   unlocked=true;
   locked=false;
   gate.classList.remove('show');
@@ -786,7 +793,8 @@ watch.addEventListener('click',e=>{
 
   if(next<urls.length){
     current=next;
-    // The next lock will be five videos later.
+
+    // After passing this checkpoint, the next checkpoint is 5 videos later.
     nextGate=next+5;
 
     feed.scrollTo({
@@ -794,8 +802,8 @@ watch.addEventListener('click',e=>{
       behavior:'smooth'
     });
 
-    // Load the next video immediately.
-    setTimeout(()=>activate(next),80);
+    // Start the next video immediately.
+    activate(next);
   }
 });
 
