@@ -1,338 +1,1024 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#000000">
-  <title>Viral Video Feeds</title>
-  <meta name="description" content="Watch viral short videos">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
 
-  <!-- Monetag Onclick (Popunder) -->
-  <script>(function(s){s.dataset.zone='11792662',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <title>Viral Video Feeds</title>
 
   <style>
-    * { box-sizing: border-box; }
-    html, body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+
+    html,
+    body {
       width: 100%;
       height: 100%;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
       overflow: hidden;
-      overscroll-behavior: none;
+      background: #000;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    .feed {
+    #feed {
       width: 100%;
       height: 100vh;
       height: 100dvh;
-      overflow-y: scroll;
+
+      overflow-y: auto;
       overflow-x: hidden;
+
       scroll-snap-type: y mandatory;
       -webkit-overflow-scrolling: touch;
-      touch-action: pan-y;
-      scrollbar-width: none;
-      background: #000;
+
       overscroll-behavior-y: contain;
+
+      scrollbar-width: none;
     }
 
-    .feed::-webkit-scrollbar { display: none; }
+    #feed::-webkit-scrollbar {
+      display: none;
+    }
 
-    .video-card {
+    .video-page {
       position: relative;
+
       width: 100%;
       height: 100vh;
       height: 100dvh;
-      min-height: 100vh;
-      min-height: 100dvh;
+
+      flex-shrink: 0;
+
       scroll-snap-align: start;
       scroll-snap-stop: always;
+
       background: #000;
+
       overflow: hidden;
-      touch-action: pan-y;
     }
 
     video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+
+      object-fit: contain;
+
       display: block;
+
       background: #000;
-      touch-action: pan-y;
     }
 
-    .topbar {
+    /* Top title */
+
+    .top-title {
       position: fixed;
-      z-index: 20;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 16px 18px;
-      padding-top: max(16px, env(safe-area-inset-top));
-      background: linear-gradient(to bottom, rgba(0,0,0,.65), transparent);
+
+      top: 16px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      z-index: 50;
+
+      color: #fff;
+
+      font-size: 17px;
+      font-weight: 700;
+
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.8);
+
       pointer-events: none;
     }
 
-    .topbar h1 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 700;
-      text-shadow: 0 1px 4px #000;
-    }
+    /* Bottom information */
 
     .info {
       position: absolute;
-      z-index: 5;
+
       left: 18px;
-      right: 75px;
-      bottom: 28px;
-      padding-bottom: env(safe-area-inset-bottom);
-      text-shadow: 0 1px 5px #000;
-      pointer-events: none;
+      bottom: 24px;
+
+      z-index: 20;
+
+      max-width: 75%;
+
+      color: white;
+
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.9);
     }
 
-    .info h2 {
-      margin: 0 0 7px;
-      font-size: 20px;
+    .author {
+      font-size: 16px;
       font-weight: 700;
+      margin-bottom: 5px;
     }
 
-    .info p {
-      margin: 0;
+    .caption {
       font-size: 14px;
       line-height: 1.4;
     }
 
+    /* Buttons */
+
     .controls {
       position: absolute;
-      z-index: 10;
-      right: 15px;
-      bottom: 28px;
+
+      right: 16px;
+      bottom: 20px;
+
+      z-index: 30;
+
       display: flex;
+
       flex-direction: column;
-      gap: 12px;
-      padding-bottom: env(safe-area-inset-bottom);
+
+      gap: 10px;
     }
 
-    button {
+    .control-button {
       width: 48px;
       height: 48px;
-      border: 0;
+
+      border: none;
       border-radius: 50%;
-      background: rgba(0,0,0,.55);
-      color: #fff;
-      font-size: 20px;
+
+      background: rgba(0, 0, 0, 0.6);
+
+      color: white;
+
+      font-size: 21px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       cursor: pointer;
-      display: grid;
-      place-items: center;
+
       -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+
+      backdrop-filter: blur(5px);
     }
 
-    button:active { transform: scale(.94); }
+    .control-button:active {
+      transform: scale(0.94);
+    }
 
-    .hint {
-      position: fixed;
-      z-index: 30;
+    /* Pause icon */
+
+    .pause-overlay {
+      position: absolute;
+
       left: 50%;
-      bottom: 82px;
-      transform: translateX(-50%);
-      padding: 10px 15px;
-      border-radius: 20px;
-      background: rgba(0,0,0,.72);
-      font-size: 13px;
-      white-space: nowrap;
-      opacity: 1;
-      transition: opacity .5s ease;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      z-index: 15;
+
+      width: 70px;
+      height: 70px;
+
+      border-radius: 50%;
+
+      background: rgba(0, 0, 0, 0.6);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: white;
+
+      font-size: 32px;
+
       pointer-events: none;
     }
 
-    .hint.hide { opacity: 0; }
+    .hidden {
+      display: none !important;
+    }
 
-    .loading {
+    /* Swipe hint */
+
+    #swipeHint {
       position: fixed;
-      inset: 0;
-      z-index: 50;
-      display: grid;
-      place-items: center;
-      background: #000;
-      font-size: 18px;
-      transition: opacity .4s ease;
+
+      left: 50%;
+      bottom: 35px;
+
+      transform: translateX(-50%);
+
+      z-index: 100;
+
+      color: white;
+
+      text-align: center;
+
+      pointer-events: none;
+
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.9);
+
+      transition: opacity 0.5s ease;
     }
 
-    .loading.hide {
-      opacity: 0;
-      pointer-events: none;
+    #swipeArrow {
+      font-size: 34px;
+
+      animation: bounce 1.2s infinite;
+    }
+
+    #swipeText {
+      margin-top: 4px;
+
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    @keyframes bounce {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Loading */
+
+    #loading {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 200;
+
+      background: #000;
+
+      color: white;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      font-size: 18px;
+
+      transition: opacity 0.4s ease;
+    }
+
+    /* Desktop */
+
+    @media (min-width: 768px) {
+      .video-page {
+        background: #000;
+      }
+
+      video {
+        object-fit: contain;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="loading" id="loading">Loading videos...</div>
 
-  <div class="topbar">
-    <h1>Viral Video Feeds</h1>
+  <div id="loading">
+    Loading videos...
   </div>
 
-  <main class="feed" id="feed">
-    <section class="video-card">
-      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
-      <div class="info"><h2>A little moment worth watching 🌸</h2><p>Watch, swipe and discover something new.</p></div>
-      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
-    </section>
+  <div class="top-title">
+    Viral Video Feeds
+  </div>
 
-    <section class="video-card">
-      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
-      <div class="info"><h2>Relax and keep scrolling ✨</h2><p>Enjoy the next short video.</p></div>
-      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
-    </section>
+  <div id="feed"></div>
 
-    <section class="video-card">
-      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
-      <div class="info"><h2>Discover something new 👀</h2><p>Keep scrolling to see the next short.</p></div>
-      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
-    </section>
-
-    <section class="video-card">
-      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
-      <div class="info"><h2>Watch. Swipe. Repeat. 🔥</h2><p>One video at a time, just keep scrolling.</p></div>
-      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
-    </section>
-
-    <section class="video-card">
-      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
-      <div class="info"><h2>One more video 🎬</h2><p>Keep scrolling to see the next short.</p></div>
-      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
-    </section>
-  </main>
-
-  <div class="hint" id="hint">Swipe up for the next video</div>
+  <div id="swipeHint">
+    <div id="swipeArrow">↑</div>
+    <div id="swipeText">Swipe up for next video</div>
+  </div>
 
   <script>
-    const feed = document.getElementById("feed");
-    const cards = Array.from(document.querySelectorAll(".video-card"));
-    const loading = document.getElementById("loading");
-    const hint = document.getElementById("hint");
 
-    function updatePlayButton(card) {
-      const video = card.querySelector("video");
-      const button = card.querySelector(".play");
-      button.textContent = video.paused ? "▶" : "❚❚";
-      button.setAttribute("aria-label", video.paused ? "Play" : "Pause");
+    /*
+     * VIDEO LIST
+     *
+     * These are safe public sample videos.
+     * You can replace these URLs later with videos
+     * that you have permission to publish.
+     */
+
+    const videoUrls = [
+
+      "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMob.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerScape.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+
+      "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+
+      "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+
+    ];
+
+
+    /*
+     * SHUFFLE
+     */
+
+    function shuffle(array) {
+
+      const copy = [...array];
+
+      for (let i = copy.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [copy[i], copy[j]] =
+          [copy[j], copy[i]];
+
+      }
+
+      return copy;
     }
 
-    function pauseAllExcept(activeCard) {
-      cards.forEach(card => {
-        if (card !== activeCard) {
-          card.querySelector("video").pause();
-          updatePlayButton(card);
-        }
-      });
-    }
 
-    cards.forEach(card => {
-      const video = card.querySelector("video");
-      const soundButton = card.querySelector(".sound");
-      const playButton = card.querySelector(".play");
+    /*
+     * GLOBAL STATE
+     */
 
-      video.addEventListener("loadeddata", () => loading.classList.add("hide"));
-      video.addEventListener("play", () => updatePlayButton(card));
-      video.addEventListener("pause", () => updatePlayButton(card));
+    let videos = shuffle(videoUrls);
 
-      soundButton.addEventListener("click", e => {
-        e.stopPropagation();
-        video.muted = !video.muted;
-        soundButton.textContent = video.muted ? "🔇" : "🔊";
-      });
+    let activeIndex = 0;
 
-      playButton.addEventListener("click", e => {
-        e.stopPropagation();
-        if (video.paused) {
-          pauseAllExcept(card);
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
+    let muted = true;
 
-      video.addEventListener("click", () => {
-        if (video.paused) {
-          pauseAllExcept(card);
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      });
-    });
 
-    // Mobile swipe fallback. Listen in capture phase so the swipe
-    // still works even when the video or another script receives the touch.
-    let touchStartY = 0;
-    let touchStartX = 0;
-    let touchStartTime = 0;
+    /*
+     * CREATE FEED
+     */
 
-    document.addEventListener("touchstart", (e) => {
-      if (!e.touches.length) return;
-      touchStartY = e.touches[0].clientY;
-      touchStartX = e.touches[0].clientX;
-      touchStartTime = Date.now();
-    }, { passive: true, capture: true });
+    const feed =
+      document.getElementById("feed");
 
-    document.addEventListener("touchend", (e) => {
-      if (!e.changedTouches.length) return;
 
-      const endY = e.changedTouches[0].clientY;
-      const endX = e.changedTouches[0].clientX;
-      const dy = endY - touchStartY;
-      const dx = endX - touchStartX;
-      const elapsed = Date.now() - touchStartTime;
+    function createVideoPage(src, index) {
 
-      if (elapsed > 1200 || Math.abs(dy) < 45 || Math.abs(dy) <= Math.abs(dx)) return;
+      const page =
+        document.createElement("div");
 
-      const currentIndex = Math.max(
-        0,
-        Math.min(cards.length - 1, Math.round(feed.scrollTop / feed.clientHeight))
+      page.className = "video-page";
+
+      page.dataset.index = index;
+
+
+      const video =
+        document.createElement("video");
+
+      video.src = src;
+
+      video.muted = true;
+
+      video.defaultMuted = true;
+
+      video.playsInline = true;
+
+      video.loop = true;
+
+      video.preload =
+        index <= 1 ? "auto" : "metadata";
+
+
+      video.setAttribute(
+        "playsinline",
+        ""
       );
 
-      const nextIndex = dy < 0
-        ? Math.min(currentIndex + 1, cards.length - 1)
-        : Math.max(currentIndex - 1, 0);
+      video.setAttribute(
+        "webkit-playsinline",
+        ""
+      );
 
-      if (nextIndex !== currentIndex) {
-        feed.scrollTo({
-          top: nextIndex * feed.clientHeight,
-          behavior: "smooth"
-        });
-      }
-    }, { passive: true, capture: true });
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const card = entry.target;
-        const video = card.querySelector("video");
+      /*
+       * TAP VIDEO TO PLAY / PAUSE
+       */
 
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
-          pauseAllExcept(card);
-          video.muted = true;
-          card.querySelector(".sound").textContent = "🔇";
-          video.play().catch(() => {});
-        } else {
-          video.pause();
+      page.addEventListener(
+        "click",
+        function(event) {
+
+          /*
+           * Don't pause when clicking buttons.
+           */
+
+          if (
+            event.target.closest(
+              ".control-button"
+            )
+          ) {
+            return;
+          }
+
+
+          if (video.paused) {
+
+            video.play()
+              .then(() => {
+
+                pauseIcon.classList.add(
+                  "hidden"
+                );
+
+              })
+              .catch(() => {});
+
+          } else {
+
+            video.pause();
+
+            pauseIcon.classList.remove(
+              "hidden"
+            );
+
+          }
+
         }
-        updatePlayButton(card);
-      });
-    }, { threshold: [0.65] });
+      );
 
-    cards.forEach(card => observer.observe(card));
 
-    window.addEventListener("load", () => {
-      loading.classList.add("hide");
-      setTimeout(() => hint.classList.add("hide"), 3500);
-    });
+      /*
+       * INFO
+       */
 
-    setTimeout(() => loading.classList.add("hide"), 5000);
+      const info =
+        document.createElement("div");
+
+      info.className = "info";
+
+      info.innerHTML = `
+        <div class="author">@viralvideos</div>
+        <div class="caption">
+          Watch. Swipe. Repeat. 🔥
+        </div>
+      `;
+
+
+      /*
+       * CONTROLS
+       */
+
+      const controls =
+        document.createElement("div");
+
+      controls.className = "controls";
+
+
+      /*
+       * SOUND BUTTON
+       */
+
+      const soundButton =
+        document.createElement("button");
+
+      soundButton.className =
+        "control-button";
+
+      soundButton.type =
+        "button";
+
+      soundButton.innerHTML =
+        "🔇";
+
+      soundButton.setAttribute(
+        "aria-label",
+        "Toggle sound"
+      );
+
+
+      soundButton.addEventListener(
+        "click",
+        function(event) {
+
+          event.stopPropagation();
+
+          muted = !muted;
+
+          /*
+           * Apply sound setting to
+           * every video.
+           */
+
+          document
+            .querySelectorAll("video")
+            .forEach(function(v) {
+
+              v.muted = muted;
+
+            });
+
+
+          soundButton.innerHTML =
+            muted ? "🔇" : "🔊";
+
+        }
+      );
+
+
+      /*
+       * PLAY / PAUSE BUTTON
+       */
+
+      const playButton =
+        document.createElement("button");
+
+      playButton.className =
+        "control-button";
+
+      playButton.type =
+        "button";
+
+      playButton.innerHTML =
+        "❚❚";
+
+      playButton.setAttribute(
+        "aria-label",
+        "Play or pause"
+      );
+
+
+      playButton.addEventListener(
+        "click",
+        function(event) {
+
+          event.stopPropagation();
+
+
+          if (video.paused) {
+
+            video.play()
+              .then(() => {
+
+                playButton.innerHTML =
+                  "❚❚";
+
+                pauseIcon.classList.add(
+                  "hidden"
+                );
+
+              })
+              .catch(() => {});
+
+          } else {
+
+            video.pause();
+
+            playButton.innerHTML =
+              "▶";
+
+            pauseIcon.classList.remove(
+              "hidden"
+            );
+
+          }
+
+        }
+      );
+
+
+      controls.appendChild(
+        soundButton
+      );
+
+      controls.appendChild(
+        playButton
+      );
+
+
+      /*
+       * PAUSE OVERLAY
+       */
+
+      const pauseIcon =
+        document.createElement("div");
+
+      pauseIcon.className =
+        "pause-overlay hidden";
+
+      pauseIcon.innerHTML =
+        "▶";
+
+
+      /*
+       * VIDEO EVENTS
+       */
+
+      video.addEventListener(
+        "play",
+        function() {
+
+          playButton.innerHTML =
+            "❚❚";
+
+          pauseIcon.classList.add(
+            "hidden"
+          );
+
+        }
+      );
+
+
+      video.addEventListener(
+        "pause",
+        function() {
+
+          if (index === activeIndex) {
+
+            playButton.innerHTML =
+              "▶";
+
+            pauseIcon.classList.remove(
+              "hidden"
+            );
+
+          }
+
+        }
+      );
+
+
+      /*
+       * ERROR HANDLING
+       */
+
+      video.addEventListener(
+        "error",
+        function() {
+
+          console.log(
+            "Video could not load:",
+            src
+          );
+
+        }
+      );
+
+
+      page.appendChild(video);
+
+      page.appendChild(
+        pauseIcon
+      );
+
+      page.appendChild(
+        info
+      );
+
+      page.appendChild(
+        controls
+      );
+
+
+      return page;
+    }
+
+
+    /*
+     * BUILD ALL VIDEOS
+     */
+
+    videos.forEach(
+      function(src, index) {
+
+        feed.appendChild(
+          createVideoPage(
+            src,
+            index
+          )
+        );
+
+      }
+    );
+
+
+    /*
+     * GET VIDEO ELEMENTS
+     */
+
+    function getVideos() {
+
+      return Array.from(
+        feed.querySelectorAll(
+          "video"
+        )
+      );
+
+    }
+
+
+    /*
+     * PLAY ACTIVE VIDEO
+     */
+
+    function playActiveVideo() {
+
+      const allVideos =
+        getVideos();
+
+
+      allVideos.forEach(
+        function(video, index) {
+
+          if (index === activeIndex) {
+
+            video.muted = muted;
+
+            video.play()
+              .catch(() => {});
+
+          } else {
+
+            video.pause();
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ACTIVE VIDEO DETECTION
+     */
+
+    const observer =
+      new IntersectionObserver(
+        function(entries) {
+
+          let bestEntry = null;
+
+          let bestRatio = 0;
+
+
+          entries.forEach(
+            function(entry) {
+
+              if (
+                entry.isIntersecting &&
+                entry.intersectionRatio >
+                  bestRatio
+              ) {
+
+                bestEntry = entry;
+
+                bestRatio =
+                  entry.intersectionRatio;
+
+              }
+
+            }
+          );
+
+
+          if (bestEntry) {
+
+            const index =
+              Number(
+                bestEntry
+                  .target
+                  .dataset
+                  .index
+              );
+
+
+            if (
+              !Number.isNaN(index) &&
+              index !== activeIndex
+            ) {
+
+              activeIndex = index;
+
+              playActiveVideo();
+
+            }
+
+          }
+
+        },
+        {
+          root: feed,
+
+          threshold: [
+            0.6,
+            0.8,
+            0.95
+          ]
+        }
+      );
+
+
+    /*
+     * OBSERVE PAGES
+     */
+
+    document
+      .querySelectorAll(".video-page")
+      .forEach(
+        function(page) {
+
+          observer.observe(page);
+
+        }
+      );
+
+
+    /*
+     * START FIRST VIDEO
+     */
+
+    window.setTimeout(
+      function() {
+
+        playActiveVideo();
+
+        const loading =
+          document.getElementById(
+            "loading"
+          );
+
+        loading.style.opacity = "0";
+
+
+        window.setTimeout(
+          function() {
+
+            loading.remove();
+
+          },
+          500
+        );
+
+      },
+      300
+    );
+
+
+    /*
+     * SWIPE HINT
+     */
+
+    window.setTimeout(
+      function() {
+
+        const hint =
+          document.getElementById(
+            "swipeHint"
+          );
+
+        hint.style.opacity = "0";
+
+
+        window.setTimeout(
+          function() {
+
+            hint.remove();
+
+          },
+          600
+        );
+
+      },
+      4000
+    );
+
+
+    /*
+     * PAGE VISIBILITY
+     *
+     * If the user leaves the page
+     * and comes back, resume the
+     * active video.
+     */
+
+    document.addEventListener(
+      "visibilitychange",
+      function() {
+
+        if (
+          document.visibilityState ===
+          "hidden"
+        ) {
+
+          getVideos().forEach(
+            function(video) {
+
+              video.pause();
+
+            }
+          );
+
+        } else {
+
+          window.setTimeout(
+            function() {
+
+              playActiveVideo();
+
+            },
+            200
+          );
+
+        }
+
+      }
+    );
+
+
+    /*
+     * KEYBOARD SUPPORT
+     *
+     * Useful on laptop.
+     */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "ArrowDown"
+        ) {
+
+          event.preventDefault();
+
+          const next =
+            Math.min(
+              activeIndex + 1,
+              videos.length - 1
+            );
+
+
+          feed.children[next]
+            .scrollIntoView({
+              behavior: "smooth"
+            });
+
+        }
+
+
+        if (
+          event.key === "ArrowUp"
+        ) {
+
+          event.preventDefault();
+
+          const previous =
+            Math.max(
+              activeIndex - 1,
+              0
+            );
+
+
+          feed.children[previous]
+            .scrollIntoView({
+              behavior: "smooth"
+            });
+
+        }
+
+      }
+    );
+
   </script>
+
 </body>
 </html>
