@@ -32,29 +32,7 @@ body{font-family:Arial,sans-serif}
 </head>
 <body>
 <div id="brand">Viral Videos</div>
-<div id="feed">
-  <section class="slide" data-index="0"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="1"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="2"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="3"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="4"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="5"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="6"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="7"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="8"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="9"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="10"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="11"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="12"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="13"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="14"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="15"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="16"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="17"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="18"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="19"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="20"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-</div>
+<div id="feed"></div>
 
 <button id="mute">🔊</button>
 <div id="status" class="hidden">Loading…</div>
@@ -95,6 +73,16 @@ function shuffle(a){
 const urls=shuffle([...baseUrls]);
 
 const feed=document.getElementById('feed');
+
+// Generate slides dynamically
+urls.forEach((_, idx) => {
+  const sec = document.createElement('section');
+  sec.className = 'slide';
+  sec.dataset.index = idx;
+  sec.innerHTML = '<video class="v" playsinline webkit-playsinline loop preload="none"></video>';
+  feed.appendChild(sec);
+});
+
 const vids=[...document.querySelectorAll('.v')];
 const status=document.getElementById('status');
 const gate=document.getElementById('gate');
