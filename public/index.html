@@ -33,7 +33,6 @@ body{font-family:Arial,sans-serif}
 <body>
 <div id="brand">Viral Videos</div>
 <div id="feed">
-  <!-- Dynamic Slides Generation to Clean HTML -->
   <section class="slide" data-index="0"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
   <section class="slide" data-index="1"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
   <section class="slide" data-index="2"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
@@ -120,25 +119,21 @@ function gateOff(){
   gate.classList.remove('show');
 }
 
-// Fixed Pause & Automatic Resume Logic
 function triggerAdPause(i) {
   if (!isFifthVideo(i) || lastTimedPause === i) return;
 
   lastTimedPause = i;
   isAdPaused = true;
 
-  // 1. Current Video ko Pause karein
   const currentVid = vids[i];
   if (currentVid) {
     currentVid.pause();
   }
 
-  // 2. Watch More Gate Dikhayein
   gateOn();
 
   if (pauseTimer) clearTimeout(pauseTimer);
 
-  // 3. Exactly 4 Second Timer ke baad Auto-Resume
   pauseTimer = setTimeout(() => {
     resumeVideoFeed();
   }, 4000);
@@ -153,14 +148,12 @@ function resumeVideoFeed() {
   gateOff();
   isAdPaused = false;
 
-  // Video ko wapas play karein (Promise Handling ke saath)
   const currentVid = vids[current];
   if (currentVid) {
     currentVid.muted = muted;
     const playPromise = currentVid.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // Fallback agar browser block kare toh mute Mode mein play kar de
         currentVid.muted = true;
         muted = true;
         mute.textContent = '🔇';
@@ -204,7 +197,6 @@ function activate(i){
   v.loop=true;
   v.playsInline=true;
 
-  // Checking 5th video pause trigger
   if (isFifthVideo(i) && lastTimedPause !== i) {
     triggerAdPause(i);
   } else {
@@ -229,7 +221,6 @@ function activate(i){
   hint.classList.add('hidden');
 }
 
-// Scroll Handler
 let scrollTimer;
 feed.addEventListener('scroll',()=>{
   clearTimeout(scrollTimer);
@@ -244,7 +235,6 @@ feed.addEventListener('scroll',()=>{
   },80);
 },{passive:true});
 
-// Swipe Logic for Mobile
 let swipeStartY=0;
 let swipeStartX=0;
 let swipeActive=false;
@@ -285,18 +275,12 @@ document.addEventListener('touchend',e=>{
   activate(target);
 },{passive:true,capture:true});
 
-// Watch More Click Handler (Monetag Popunder trigger + Manual Resume)
 watch.addEventListener('click',e=>{
   e.preventDefault();
   e.stopPropagation();
-
-  // Monetag Ad Screen Trigger (Automatic handling via script tag)
-  
-  // Direct Resume Feed instantly on user click
   resumeVideoFeed();
 });
 
-// Mute Toggle Handler
 mute.addEventListener('click',e=>{
  e.preventDefault();
  e.stopPropagation();
@@ -309,7 +293,6 @@ mute.addEventListener('click',e=>{
  }
 });
 
-// Video Play/Pause Touch Event
 vids.forEach((v,i)=>{
  v.addEventListener('click',()=>{
    if(i!==current || isAdPaused) return;
@@ -326,7 +309,6 @@ window.addEventListener('resize',()=>{
  feed.scrollTo({top:current*feed.clientHeight,behavior:'auto'});
 });
 
-// Initial Start
 activate(0);
 setTimeout(()=>hint.classList.add('hidden'),4000);
 </script>
