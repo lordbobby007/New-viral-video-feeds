@@ -3,322 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000">
-<title>Viral Videos</title>
-<script>(function(s){s.dataset.zone='11792662',s.src='https://al5sm.com/tag.min.js'})([document.documentElement,document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<title>Viral Video Feeds</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:#000;overflow:hidden}
-body{font-family:Arial,sans-serif}
-#feed{position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-snap-stop:always;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y;scrollbar-width:none}
-#feed::-webkit-scrollbar{display:none}
-.slide{height:100dvh;min-height:100vh;width:100%;position:relative;scroll-snap-align:start;scroll-snap-stop:always;background:#000;display:flex;align-items:center;justify-content:center}
-.v{width:100%;height:100%;object-fit:contain;background:#000;display:block}
-#brand{position:fixed;z-index:50;top:calc(env(safe-area-inset-top) + 14px);left:14px;padding:9px 15px;border-radius:22px;background:rgba(0,0,0,.58);color:#fff;font-weight:700;pointer-events:none}
-#mute{position:fixed;z-index:60;right:15px;bottom:calc(env(safe-area-inset-bottom) + 20px);width:45px;height:45px;border:0;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:20px}
-#status{position:fixed;z-index:70;left:50%;top:50%;transform:translate(-50%,-50%);padding:10px 15px;border-radius:20px;background:rgba(0,0,0,.65);color:#fff;font-size:14px}
-#gate{display:none;position:fixed;z-index:100;inset:0;align-items:center;justify-content:center;background:transparent;pointer-events:none}
-#gate.show{display:flex;pointer-events:none}
-.box{width:min(88%,340px);padding:25px 20px;border-radius:18px;background:#181818;color:#fff;text-align:center}
-.box h2{margin:0 0 8px}
-.box p{margin:0 0 18px;color:#ccc;font-size:14px}
-#watch{border:0;border-radius:12px;padding:14px 25px;font-size:16px;font-weight:700}
-#hint{position:fixed;z-index:40;left:50%;bottom:calc(env(safe-area-inset-bottom) + 82px);transform:translateX(-50%);padding:8px 13px;border-radius:18px;background:rgba(0,0,0,.5);color:#fff;font-size:13px;pointer-events:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif}
+#feed{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;touch-action:pan-y}
+.slide{position:relative;width:100%;height:100dvh;min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;background:#000;display:flex;align-items:center;justify-content:center}
+video{width:100%;height:100%;object-fit:contain;background:#000;display:block}
+#gate{display:none;position:fixed;z-index:1000;left:0;right:0;top:0;bottom:0;align-items:center;justify-content:center;pointer-events:none}
+#gate.show{display:flex}
+#gateBox{pointer-events:none;text-align:center;background:rgba(0,0,0,.72);border-radius:14px;padding:18px 22px;color:#fff;max-width:90%;font-size:16px;font-weight:600;line-height:1.35}
+#watch{display:inline-block;margin-top:10px;padding:10px 18px;border-radius:999px;background:#fff;color:#000;font-weight:700;border:0;font-size:15px;pointer-events:auto}
+#mute{position:fixed;z-index:1100;right:16px;bottom:18px;width:44px;height:44px;border:0;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:20px}
+#hint{position:fixed;z-index:1100;left:50%;bottom:18px;transform:translateX(-50%);color:#fff;background:rgba(0,0,0,.45);padding:8px 12px;border-radius:20px;font-size:13px}
 .hidden{display:none!important}
 </style>
 </head>
 <body>
-<div id="brand">Viral Videos</div>
-<div id="feed">
-  <section class="slide" data-index="0"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="1"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="2"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="3"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="4"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="5"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="6"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="7"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="8"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="9"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="10"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="11"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="12"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="13"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="14"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="15"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="16"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="17"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="18"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="19"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="20"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="21"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="22"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="23"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="24"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="25"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="26"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="27"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="28"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="29"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="30"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="31"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="32"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="33"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="34"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="35"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="36"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="37"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="38"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="39"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="40"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="41"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="42"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="43"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="44"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="45"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="46"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="47"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="48"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="49"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="50"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="51"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="52"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="53"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="54"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="55"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="56"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="57"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="58"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="59"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="60"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="61"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="62"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="63"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="64"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="65"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="66"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="67"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="68"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="69"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="70"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="71"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="72"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="73"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="74"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="75"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="76"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="77"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="78"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="79"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="80"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="81"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="82"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="83"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="84"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="85"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="86"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="87"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="88"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="89"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="90"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="91"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="92"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="93"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="94"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="95"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="96"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="97"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="98"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="99"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="100"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="101"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="102"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="103"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="104"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="105"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="106"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="107"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="108"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="109"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="110"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="111"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="112"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="113"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="114"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="115"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="116"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="117"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="118"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="119"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="120"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="121"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="122"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="123"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="124"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="125"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="126"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="127"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="128"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="129"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="130"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="131"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="132"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="133"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="134"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="135"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="136"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="137"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="138"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="139"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="140"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="141"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="142"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="143"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="144"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="145"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="146"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="147"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="148"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="149"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="150"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="151"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="152"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="153"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="154"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="155"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="156"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="157"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="158"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="159"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="160"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="161"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="162"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="163"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="164"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="165"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="166"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="167"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="168"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="169"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="170"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="171"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="172"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="173"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="174"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="175"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="176"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="177"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="178"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="179"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="180"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="181"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="182"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="183"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="184"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="185"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="186"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="187"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="188"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="189"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="190"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="191"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="192"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="193"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="194"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="195"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="196"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="197"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="198"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="199"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="200"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="201"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="202"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="203"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="204"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="205"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="206"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="207"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="208"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="209"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="210"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="211"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="212"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="213"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="214"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="215"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="216"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="217"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="218"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="219"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="220"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="221"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="222"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="223"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="224"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="225"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="226"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="227"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="228"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="229"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="230"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="231"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="232"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="233"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="234"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="235"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="236"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="237"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="238"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="239"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="240"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="241"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="242"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="243"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="244"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="245"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="246"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="247"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="248"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="249"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="250"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="251"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="252"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="253"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="254"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="255"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="256"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="257"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="258"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="259"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="260"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="261"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="262"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="263"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="264"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="265"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="266"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="267"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="268"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="269"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="270"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="271"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="272"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="273"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-  <section class="slide" data-index="274"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
-</div>
-<button id="mute">🔊</button>
-<div id="status" aria-hidden="true" style="display:none" aria-hidden="true" style="display:none">Loading…</div>
-<div id="hint">Swipe up for next video</div>
-<div id="gate">
- <div class="box">
-  <h2>Watch more</h2>
-  <p>Click Watch More to Watch more videos</p>
-  <button id="watch">Watch More</button>
- </div>
+
+<div id="feed"></div>
+
+<div id="gate" aria-hidden="true">
+  <div id="gateBox">
+    <div>Click Watch More to Watch more videos</div>
+    <button id="watch" type="button">Watch More</button>
+  </div>
 </div>
 
+<button id="mute" type="button" aria-label="Mute or unmute">🔇</button>
+<div id="hint">Swipe up for next video</div>
+
 <script>
-const baseUrls=[
+const BASE_URLS=[
   'https://primeexclusive.shop/wp-theme/videos/1%20(445).mp4',
   'https://primeexclusive.shop/wp-theme/videos/1%20(405).mp4',
   'https://primeexclusive.shop/wp-theme/videos/1%20(117).mp4',
@@ -596,171 +312,131 @@ const baseUrls=[
   'https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4'
 ];
 
-function shuffle(a){
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-const urls=shuffle([...baseUrls]);
+// Random order every time the page opens/refreshed.
+const urls=[...BASE_URLS].sort(()=>Math.random()-0.5);
 
 const feed=document.getElementById('feed');
-const slides=[...document.querySelectorAll('.slide')];
-const vids=[...document.querySelectorAll('.v')];
-const status=document.getElementById('status');
 const gate=document.getElementById('gate');
 const watch=document.getElementById('watch');
 const mute=document.getElementById('mute');
 const hint=document.getElementById('hint');
 
 let current=0;
-let muted=false;
-let locked=false;
-let pauseTimer=null;
-let lastTimedPause=-1;
+let muted=true;
+let fifthTimer=null;
+let fifthShown=-1;
+let scrollTimer=null;
 
-function isFifthVideo(i){
+// Create one real video element per slide. This avoids moving a single player
+// between slides, which caused the black-screen/playback problems.
+const vids=urls.map((url,i)=>{
+  const slide=document.createElement('section');
+  slide.className='slide';
+  slide.dataset.index=i;
+
+  const v=document.createElement('video');
+  v.playsInline=true;
+  v.setAttribute('playsinline','');
+  v.setAttribute('webkit-playsinline','');
+  v.muted=true;
+  v.loop=true;
+  v.preload=i<2?'auto':'metadata';
+
+  slide.appendChild(v);
+  feed.appendChild(slide);
+  return v;
+});
+
+function isFifth(i){
   return i>=4 && ((i+1)%5===0);
 }
 
-function gateOn(){
-  gate.classList.add('show');
-}
-function gateOff(){
+function hideGate(){
   gate.classList.remove('show');
 }
 
-function stop(v){
-  try{v.pause()}catch(e){}
-}
+function showGateForFourSeconds(i){
+  if(!isFifth(i) || fifthShown===i) return;
 
-function loadVideo(i, autoplay=true){
-  const v=vids[i];
-  if(!v) return;
+  fifthShown=i;
+  if(fifthTimer) clearTimeout(fifthTimer);
 
-  if(v.dataset.loaded!=='1'){
-    v.src=urls[i];
-    v.dataset.loaded='1';
-    v.load();
-  }
+  // IMPORTANT: never pause the current video here.
+  gate.classList.add('show');
 
-  v.muted=muted;
-  v.loop=true;
-  v.playsInline=true;
-
-  if(!autoplay) return;
-
-  const playNow=()=>{
-    if(current!==i) return;
-    v.muted=muted;
-    const p=v.play();
-    if(p && typeof p.catch==='function'){
-      p.catch(()=>{
-        v.muted=true;
-        muted=true;
-        mute.textContent='🔇';
-        v.play().catch(()=>{});
-      });
-    }
-  };
-
-  if(v.readyState>=2) {
-    playNow();
-  } else {
-    v.addEventListener('canplay',playNow,{once:true});
-    v.addEventListener('loadeddata',playNow,{once:true});
-  }
-}
-
-
-function preload(i){
-  if(i<0||i>=urls.length) return;
-  const v=vids[i];
-  if(v.dataset.loaded==='1') return;
-  v.src=urls[i];
-  v.preload='metadata';
-  v.load();
-  v.dataset.loaded='1';
-}
-
-function startThreeSecondPause(i){
-  if(!isFifthVideo(i) || lastTimedPause===i) return;
-
-  lastTimedPause=i;
-  if(pauseTimer) clearTimeout(pauseTimer);
-
-  // IMPORTANT: this is a visual prompt only.
-  // The video is NEVER paused here.
-  gateOn();
-
-  pauseTimer=setTimeout(()=>{
-    pauseTimer=null;
-    gateOff();
+  fifthTimer=setTimeout(()=>{
+    fifthTimer=null;
+    hideGate();
   },4000);
 }
 
+function ensureSource(i){
+  const v=vids[i];
+  if(!v) return;
+
+  if(v.dataset.srcLoaded!=='1'){
+    v.src=urls[i];
+    v.dataset.srcLoaded='1';
+    v.load();
+  }
+}
+
+function playCurrent(i){
+  const v=vids[i];
+  if(!v || current!==i) return;
+
+  v.muted=muted;
+  v.loop=true;
+
+  const p=v.play();
+  if(p && p.catch){
+    p.catch(()=>{
+      // Mobile autoplay fallback: muted playback.
+      v.muted=true;
+      muted=true;
+      mute.textContent='🔇';
+      v.play().catch(()=>{});
+    });
+  }
+}
 
 function activate(i){
-  if(i<0||i>=urls.length) return;
+  if(i<0 || i>=urls.length) return;
 
   current=i;
 
+  // Only stop videos that are no longer current.
   vids.forEach((v,n)=>{
-    if(n!==i){
-      try{v.pause()}catch(e){}
+    if(n!==i && !v.paused){
+      v.pause();
     }
   });
 
-  if(vids[i].dataset.loaded!=='1'){
-    vids[i].src=urls[i];
-    vids[i].dataset.loaded='1';
-    vids[i].load();
+  ensureSource(i);
+  ensureSource(i+1);
+  ensureSource(i-1);
+
+  const v=vids[i];
+
+  if(v.readyState>=2){
+    playCurrent(i);
+  }else{
+    v.addEventListener('canplay',()=>playCurrent(i),{once:true});
+    v.addEventListener('loadeddata',()=>playCurrent(i),{once:true});
   }
 
-  vids[i].muted=muted;
-  vids[i].loop=true;
-  vids[i].playsInline=true;
-
-  const playCurrent=()=>{
-    if(current!==i) return;
-    vids[i].muted=muted;
-    vids[i].play().catch(()=>{
-      vids[i].muted=true;
-      muted=true;
-      mute.textContent='🔇';
-      vids[i].play().catch(()=>{});
-    });
-  };
-
-  if(vids[i].readyState>=2) playCurrent();
-  else vids[i].addEventListener('canplay',playCurrent,{once:true});
-
-  preload(i+1);
-  preload(i-1);
-
-  // Every 5th video gets a visual 4-second Watch More overlay.
-  startThreeSecondPause(i);
+  // Purely visual 4-second prompt on every fifth video.
+  showGateForFourSeconds(i);
 
   hint.classList.add('hidden');
 }
 
-
-function go(i){
-  if(i<0||i>=urls.length) return;
-
-  current=i;
-  feed.scrollTo({
-    top:i*feed.clientHeight,
-    behavior:'smooth'
-  });
-
-  setTimeout(()=>{
-    if(current===i) activate(i);
-  },450);
+function goTo(i){
+  if(i<0 || i>=urls.length) return;
+  feed.scrollTo({top:i*feed.clientHeight,behavior:'smooth'});
 }
 
-let scrollTimer;
+// Native scroll-snap is the primary navigation.
 feed.addEventListener('scroll',()=>{
   clearTimeout(scrollTimer);
   scrollTimer=setTimeout(()=>{
@@ -768,95 +444,89 @@ feed.addEventListener('scroll',()=>{
       urls.length-1,
       Math.round(feed.scrollTop/feed.clientHeight)
     ));
-
-        if(i===current) return;
-    activate(i);
+    if(i!==current) activate(i);
   },80);
 },{passive:true});
 
-// Reliable vertical swipe navigation for mobile/Telegram WebView.
-let swipeStartY=0;
-let swipeStartX=0;
-let swipeActive=false;
-
+// Extra swipe support for Telegram/mobile WebViews.
+let startY=0,startX=0;
 document.addEventListener('touchstart',e=>{
   if(!e.touches[0]) return;
-  swipeStartY=e.touches[0].clientY;
-  swipeStartX=e.touches[0].clientX;
-  swipeActive=false;
-},{passive:true,capture:true});
-
-document.addEventListener('touchmove',e=>{
-  if(!e.touches[0]) return;
-  const dy=e.touches[0].clientY-swipeStartY;
-  const dx=e.touches[0].clientX-swipeStartX;
-
-  if(Math.abs(dy)>10 && Math.abs(dy)>Math.abs(dx)){
-    swipeActive=true;
-  }
+  startY=e.touches[0].clientY;
+  startX=e.touches[0].clientX;
 },{passive:true,capture:true});
 
 document.addEventListener('touchend',e=>{
-  if(!e.changedTouches[0] || !swipeActive) return;
+  if(!e.changedTouches[0]) return;
+  const dy=e.changedTouches[0].clientY-startY;
+  const dx=e.changedTouches[0].clientX-startX;
 
-  const dy=e.changedTouches[0].clientY-swipeStartY;
-  const dx=e.changedTouches[0].clientX-swipeStartX;
+  if(Math.abs(dy)<45 || Math.abs(dy)<=Math.abs(dx)) return;
 
-  if(Math.abs(dy)<35 || Math.abs(dy)<=Math.abs(dx)) return;
-
-  const target=current+(dy<0 ? 1 : -1);
-  if(target<0 || target>=urls.length) return;
-
-  current=target;
-  feed.scrollTo({
-    top:target*feed.clientHeight,
-    behavior:'smooth'
-  });
-  activate(target);
+  const target=current+(dy<0?1:-1);
+  if(target>=0 && target<urls.length) goTo(target);
 },{passive:true,capture:true});
 
-// Watch More is only displayed during the 3-second pause.
-// No unlock logic is attached to it. The feed automatically resumes.
+// Desktop wheel navigation.
+let wheelBusy=false;
+feed.addEventListener('wheel',e=>{
+  if(Math.abs(e.deltaY)<20 || wheelBusy) return;
+  wheelBusy=true;
+  goTo(current+(e.deltaY>0?1:-1));
+  setTimeout(()=>wheelBusy=false,550);
+},{passive:true});
+
+// Keyboard navigation.
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown' || e.key==='PageDown'){
+    e.preventDefault();
+    goTo(current+1);
+  }else if(e.key==='ArrowUp' || e.key==='PageUp'){
+    e.preventDefault();
+    goTo(current-1);
+  }
+});
+
+// Mute button.
+mute.addEventListener('click',e=>{
+  e.preventDefault();
+  e.stopPropagation();
+
+  muted=!muted;
+  mute.textContent=muted?'🔇':'🔊';
+
+  const v=vids[current];
+  if(v){
+    v.muted=muted;
+    if(v.paused) v.play().catch(()=>{});
+  }
+});
+
+// Watch More is just a button displayed during the 4-second prompt.
+// It NEVER controls feed playback.
 watch.addEventListener('click',e=>{
   e.preventDefault();
   e.stopPropagation();
-  // The button is informational only. Feed playback is never locked.
 });
 
-mute.addEventListener('click',e=>{
- e.preventDefault();
- e.stopPropagation();
- muted=!muted;
- mute.textContent=muted?'🔇':'🔊';
- const v=vids[current];
- v.muted=muted;
- v.play().catch(()=>{});
-});
-
-vids.forEach((v,i)=>{
- v.addEventListener('click',()=>{
-   if(i!==current)return;
-   if(v.paused)v.play().catch(()=>{});
-   else v.pause();
- });
- v.addEventListener('error',()=>{
-   if(i===current){
-     status.textContent='Video could not be loaded';
-     status.classList.remove('hidden');
-   }
- });
-});
-
+// If the app returns from background, restart the current video normally.
 document.addEventListener('visibilitychange',()=>{
- if(!document.hidden) setTimeout(()=>loadVideo(current,true),150);
+  if(!document.hidden){
+    setTimeout(()=>{
+      ensureSource(current);
+      playCurrent(current);
+    },100);
+  }
 });
 
-window.addEventListener('resize',()=>{
- feed.scrollTo({top:current*feed.clientHeight,behavior:'auto'});
-});
-
+// Start first video.
 activate(0);
-setTimeout(()=>hint.classList.add('hidden'),4000);
 </script>
+
+<!-- Monetag Onclick -->
+<script>
+(function(s){s.dataset.zone='11792662',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+</script>
+
 </body>
 </html>
