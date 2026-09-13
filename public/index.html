@@ -4,82 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
-  <title>Viral Video Feeds</title>
+  <title>Viral Videos</title>
 
   <!-- Monetag Onclick -->
   <script>(function(s){s.dataset.zone='11792662',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-    body { font-family: Arial, sans-serif; }
+    html, body {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      overflow: hidden; background: #000;
+      font-family: Arial, sans-serif;
+    }
     #feed {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100dvh;
-      overflow: hidden;
-      background: #000;
+      position: fixed; inset: 0; width: 100%; height: 100dvh;
+      overflow: hidden; background: #000;
       touch-action: none;
     }
     #video {
-      display: block;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
+      display: block; position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: contain; background: #000;
     }
-    #loading {
+
+    /* Instagram-Reels-style branding button */
+    #brand {
       position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      top: calc(env(safe-area-inset-top) + 14px);
+      left: 16px;
+      z-index: 20;
+      border: 0;
+      border-radius: 22px;
+      padding: 10px 16px;
       color: #fff;
-      font-size: 15px;
-      background: #000;
-      z-index: 5;
+      background: rgba(0,0,0,.55);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: .1px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      pointer-events: none;
+    }
+
+    #loading {
+      position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center;
+      color: #fff; font-size: 15px; background: #000; z-index: 5;
     }
     #loading.hidden { display: none; }
+
     #sound {
-      position: absolute;
-      right: 18px;
-      bottom: 28px;
-      z-index: 10;
-      width: 48px;
-      height: 48px;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(0,0,0,.55);
-      color: #fff;
+      position: absolute; right: 18px;
+      bottom: calc(env(safe-area-inset-bottom) + 28px);
+      z-index: 20; width: 48px; height: 48px;
+      border: 0; border-radius: 50%;
+      background: rgba(0,0,0,.55); color: #fff;
       font-size: 22px;
     }
-    #error {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      color: #fff;
+
+    /* Gate shown after every 5th video */
+    #gate {
+      position: absolute; inset: 0; z-index: 30;
+      display: none; align-items: center; justify-content: center;
+      flex-direction: column;
+      background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.12) 55%, rgba(0,0,0,.25));
       text-align: center;
-      z-index: 6;
-      display: none;
-      width: 90%;
+      color: #fff;
+      padding: 24px;
+    }
+    #gate.show { display: flex; }
+
+    #gate-title {
+      font-size: 22px; font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0,0,0,.5);
+    }
+    #gate-text {
+      font-size: 14px; opacity: .9;
+      margin-bottom: 16px;
+    }
+    #watchMore {
+      border: 0;
+      border-radius: 28px;
+      padding: 14px 26px;
+      min-width: 180px;
+      background: #fff;
+      color: #111;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 5px 22px rgba(0,0,0,.35);
+    }
+    #watchMore:active { transform: scale(.97); }
+
+    #error {
+      position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff; text-align: center; z-index: 40;
+      display: none; width: 90%;
     }
     #error button {
-      margin-top: 12px;
-      padding: 10px 18px;
-      border: 0;
-      border-radius: 20px;
-      font-size: 15px;
+      margin-top: 12px; padding: 10px 18px;
+      border: 0; border-radius: 20px; font-size: 15px;
     }
+
     #swipe {
       position: absolute;
       left: 50%;
-      bottom: 34px;
+      bottom: calc(env(safe-area-inset-bottom) + 34px);
       transform: translateX(-50%);
-      z-index: 9;
+      z-index: 10;
       color: rgba(255,255,255,.9);
       background: rgba(0,0,0,.45);
       padding: 8px 14px;
@@ -96,8 +130,19 @@
   <main id="feed">
     <div id="loading">Loading video…</div>
     <video id="video" playsinline webkit-playsinline muted loop preload="auto"></video>
+
+    <div id="brand">Viral Videos</div>
+
     <button id="sound" aria-label="Toggle sound">🔇</button>
+
+    <div id="gate">
+      <div id="gate-title">Enjoying the videos?</div>
+      <div id="gate-text">Tap below to watch more viral videos.</div>
+      <button id="watchMore">Watch more</button>
+    </div>
+
     <div id="swipe">Swipe up for next video</div>
+
     <div id="error">
       Video could not be played.<br>
       <button id="retry">Retry</button>
@@ -106,287 +151,288 @@
 
   <script>
     const videoUrls = [
-      "https://primeexclusive.shop/wp-theme/videos/1%20(445).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(405).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(117).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(219).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(124).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(434).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(268).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(81).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(426).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(311).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(248).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(372).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(220).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(140).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(7).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(38).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(102).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(449).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(458).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(5).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(457).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(319).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(438).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(115).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(180).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(134).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(274).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(69).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(383).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(250).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(76).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(44).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(91).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(320).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(318).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(295).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(386).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(447).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(376).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(25).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(380).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(261).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(306).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(54).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(119).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(126).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(437).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(36).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(83).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(368).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(223).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(41).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(128).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(94).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(385).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(191).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(403).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(47).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(63).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(194).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(221).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(62).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(183).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(343).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(465).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(322).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(184).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(291).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(158).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(360).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(159).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(370).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(118).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(139).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(264).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(147).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(456).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(110).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(125).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(275).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(316).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(339).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(282).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(150).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(56).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(344).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(265).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(396).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(52).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(258).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(304).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(411).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(260).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(65).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(362).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(37).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(393).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(95).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(116).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(442).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(4).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(218).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(340).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(185).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(273).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(157).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(402).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(231).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(18).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(225).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(13).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(400).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(395).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(161).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(392).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(269).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(84).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(29).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(280).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(333).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(421).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(216).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(82).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(326).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(200).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(351).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(144).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(408).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(315).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(428).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(16).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(415).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(166).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(176).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(131).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(213).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(31).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(443).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(301).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(3).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(271).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(99).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(156).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(359).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(440).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(365).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(12).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(419).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(111).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(450).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(138).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(129).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(425).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(21).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(253).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(283).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(53).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(40).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(79).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(245).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(39).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(85).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(205).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(278).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(432).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(236).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(417).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(330).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(357).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(416).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(60).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(350).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(244).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(71).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(15).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(74).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(397).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(68).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(188).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(50).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(30).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(462).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(195).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(193).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(136).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(121).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(276).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(388).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(367).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(352).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(418).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(355).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(342).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(266).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(142).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(387).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(19).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(186).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(289).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(444).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(374).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(404).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(122).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(237).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(6).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(106).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(314).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(347).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(300).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(287).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(174).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(204).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(2).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(313).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(459).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(23).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(151).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(112).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(346).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(233).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(17).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(196).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(210).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(49).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(173).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(32).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(461).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(113).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(137).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(107).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(371).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(109).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(11).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(439).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(293).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(299).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(331).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(48).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(114).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(90).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(232).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(294).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(324).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(201).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(206).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(335).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(33).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(202).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(35).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(169).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(34).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(341).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(10).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(104).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(410).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(327).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(242).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(243).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(328).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(292).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(26).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(212).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(105).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(93).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(281).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(308).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(45).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(215).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(375).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(28).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(321).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(8).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(430).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(349).mp4",
-      "https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4"
+      'https://primeexclusive.shop/wp-theme/videos/1%20(445).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(405).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(117).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(219).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(124).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(434).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(268).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(81).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(426).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(311).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(248).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(372).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(220).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(140).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(7).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(38).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(102).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(449).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(458).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(5).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(457).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(319).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(438).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(115).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(180).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(134).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(274).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(69).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(383).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(250).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(76).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(44).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(91).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(320).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(318).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(295).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(386).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(447).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(376).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(25).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(380).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(261).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(306).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(54).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(119).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(126).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(437).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(36).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(83).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(368).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(223).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(41).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(128).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(94).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(385).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(191).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(403).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(47).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(63).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(194).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(221).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(62).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(183).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(343).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(465).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(322).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(184).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(291).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(158).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(360).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(159).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(370).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(118).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(139).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(264).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(147).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(456).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(110).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(125).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(275).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(316).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(339).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(282).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(150).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(56).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(344).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(265).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(396).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(52).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(258).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(304).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(411).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(260).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(65).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(362).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(37).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(393).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(95).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(116).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(442).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(4).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(218).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(340).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(185).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(273).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(157).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(402).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(231).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(18).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(225).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(13).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(400).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(395).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(161).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(392).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(269).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(84).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(29).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(280).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(333).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(421).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(216).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(82).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(326).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(200).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(351).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(144).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(408).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(315).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(428).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(16).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(415).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(166).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(176).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(131).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(213).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(31).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(443).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(301).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(3).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(271).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(99).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(156).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(359).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(440).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(365).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(12).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(419).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(111).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(450).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(138).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(129).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(425).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(21).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(253).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(283).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(53).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(40).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(79).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(245).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(39).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(85).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(205).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(278).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(432).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(236).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(417).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(330).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(357).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(416).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(60).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(350).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(244).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(71).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(15).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(74).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(397).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(68).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(188).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(50).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(30).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(462).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(195).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(193).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(136).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(121).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(276).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(388).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(367).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(352).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(418).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(355).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(342).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(266).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(142).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(387).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(19).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(186).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(289).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(444).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(374).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(404).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(122).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(237).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(6).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(106).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(314).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(347).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(300).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(287).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(174).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(204).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(2).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(313).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(459).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(23).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(151).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(112).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(346).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(233).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(17).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(196).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(210).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(49).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(173).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(32).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(461).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(113).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(137).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(107).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(371).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(109).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(11).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(439).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(293).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(299).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(331).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(48).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(114).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(90).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(232).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(294).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(324).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(201).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(206).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(335).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(33).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(202).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(35).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(169).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(34).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(341).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(10).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(104).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(410).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(327).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(242).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(243).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(328).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(292).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(26).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(212).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(105).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(93).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(281).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(308).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(45).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(215).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(375).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(28).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(321).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(8).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(430).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(349).mp4',
+      'https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4'
     ];
 
     const video = document.getElementById("video");
     const loading = document.getElementById("loading");
     const sound = document.getElementById("sound");
-    const errorBox = document.getElementById("error");
+    const gate = document.getElementById("gate");
+    const watchMore = document.getElementById("watchMore");
     const retry = document.getElementById("retry");
     const swipe = document.getElementById("swipe");
 
@@ -395,6 +441,22 @@
     let startX = 0;
     let moving = false;
     let changing = false;
+    let unlocked = true;
+
+    // Lock immediately after videos 5, 10, 15, ...
+    function isGateVideo(index) {
+      return (index + 1) % 5 === 0;
+    }
+
+    function showGate() {
+      unlocked = false;
+      gate.classList.add("show");
+    }
+
+    function hideGate() {
+      unlocked = true;
+      gate.classList.remove("show");
+    }
 
     function loadVideo(index, autoplay = true) {
       if (index < 0 || index >= videoUrls.length || changing) return;
@@ -402,7 +464,7 @@
       changing = true;
       currentIndex = index;
       loading.classList.remove("hidden");
-      errorBox.style.display = "none";
+      document.getElementById("error").style.display = "none";
 
       video.pause();
       video.removeAttribute("src");
@@ -412,18 +474,17 @@
       video.src = videoUrls[index];
       video.load();
 
-      if (autoplay) {
-        video.play().catch(() => {});
-      }
+      if (autoplay) video.play().catch(() => {});
 
-      setTimeout(() => {
-        changing = false;
-      }, 100);
+      // The gate appears only after the 5th video has loaded.
+      if (isGateVideo(index)) showGate();
+      else hideGate();
+
+      setTimeout(() => { changing = false; }, 120);
     }
 
     video.addEventListener("loadeddata", () => {
       loading.classList.add("hidden");
-      errorBox.style.display = "none";
       video.play().catch(() => {});
     });
 
@@ -434,12 +495,12 @@
 
     video.addEventListener("playing", () => {
       loading.classList.add("hidden");
-      errorBox.style.display = "none";
+      document.getElementById("error").style.display = "none";
     });
 
     video.addEventListener("error", () => {
       loading.classList.add("hidden");
-      errorBox.style.display = "block";
+      document.getElementById("error").style.display = "block";
     });
 
     sound.addEventListener("click", (e) => {
@@ -458,7 +519,17 @@
       loadVideo(currentIndex);
     });
 
-    // Fast, reliable one-video-at-a-time phone swipe.
+    // IMPORTANT: this button is the user click that Monetag Onclick can use.
+    // It unlocks the next videos only after the click.
+    watchMore.addEventListener("click", (e) => {
+      e.stopPropagation();
+      hideGate();
+
+      const next = currentIndex + 1;
+      if (next < videoUrls.length) loadVideo(next);
+    });
+
+    // Phone swipe.
     document.addEventListener("touchstart", (e) => {
       if (!e.touches.length) return;
       startY = e.touches[0].clientY;
@@ -480,19 +551,23 @@
 
       if (!moving || Math.abs(dy) < 60 || Math.abs(dy) <= Math.abs(dx)) return;
 
+      // At the 5th video, scrolling is completely blocked until Watch more.
+      if (!unlocked) return;
+
       if (dy < 0 && currentIndex < videoUrls.length - 1) {
         loadVideo(currentIndex + 1);
       } else if (dy > 0 && currentIndex > 0) {
+        // Allow going back without opening another gate.
         loadVideo(currentIndex - 1);
       }
 
       swipe.classList.add("hidden");
     }, { passive: true });
 
-    // Mouse wheel / trackpad support.
+    // Laptop mouse wheel.
     let wheelLock = false;
     document.addEventListener("wheel", (e) => {
-      if (wheelLock || Math.abs(e.deltaY) < 30) return;
+      if (wheelLock || Math.abs(e.deltaY) < 30 || !unlocked) return;
       wheelLock = true;
 
       if (e.deltaY > 0 && currentIndex < videoUrls.length - 1) {
