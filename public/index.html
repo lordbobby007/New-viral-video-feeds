@@ -625,12 +625,10 @@ function isFifthVideo(i){
 }
 
 function gateOn(){
-  locked=true;
   gate.classList.add('show');
 }
 
 function gateOff(){
-  locked=false;
   gate.classList.remove('show');
 }
 
@@ -652,7 +650,7 @@ function loadVideo(i, autoplay=true){
   v.loop=true;
   v.playsInline=true;
 
-  if(!autoplay || locked) return;
+  if(!autoplay) return;
 
   const playNow=()=>{
     if(locked || current!==i) return;
@@ -693,42 +691,22 @@ function startThreeSecondPause(i){
   lastTimedPause=i;
   if(pauseTimer) clearTimeout(pauseTimer);
 
-  // IMPORTANT:
-  // Keep the video playing underneath the 4-second screen pause.
-  // This avoids mobile/Telegram WebView autoplay restrictions that can
-  // prevent a video from resuming after a delayed pause().
-  const v=vids[i];
-
-  if(v){
-    v.muted=muted;
-    v.loop=true;
-    v.playsInline=true;
-
-    const ensurePlaying=()=>{
-      if(current!==i) return;
-      const p=v.play();
-      if(p && typeof p.catch==='function') p.catch(()=>{});
-    };
-
-    ensurePlaying();
-  }
-
-  // Visually pause the screen and show Watch More.
-  gateOn();
+  // VISUAL GATE ONLY.
+  // Never pause the video and never lock the feed.
+  gate.classList.add('show');
 
   pauseTimer=setTimeout(()=>{
     pauseTimer=null;
+    gate.classList.remove('show');
 
-    // Remove the screen pause. The video has remained playing underneath,
-    // so it continues immediately with no autoplay/resume problem.
-    gateOff();
-
-    if(current===i && v){
+    // Make one normal play attempt after the overlay disappears.
+    // There is intentionally NO pause() anywhere in this gate.
+    const v=vids[i];
+    if(v && current===i){
       v.muted=muted;
       v.loop=true;
       v.playsInline=true;
-      const p=v.play();
-      if(p && typeof p.catch==='function') p.catch(()=>{});
+      v.play().catch(()=>{});
     }
   },4000);
 }
@@ -738,21 +716,49 @@ function activate(i){
   if(i<0||i>=urls.length) return;
 
   current=i;
-  vids.forEach((v,n)=>{if(n!==i) stop(v)});
 
-  if(isFifthVideo(i)){
-    startThreeSecondPause(i);
-  } else {
-    loadVideo(i,true);
+  vids.forEach((v,n)=>{
+    if(n!==i){
+      try{v.pause()}catch(e){}
+    }
+  });
+
+  if(vids[i].dataset.loaded!=='1'){
+    vids[i].src=urls[i];
+    vids[i].dataset.loaded='1';
+    vids[i].load();
   }
+
+  vids[i].muted=muted;
+  vids[i].loop=true;
+  vids[i].playsInline=true;
+
+  const playCurrent=()=>{
+    if(current!==i) return;
+    vids[i].muted=muted;
+    vids[i].play().catch(()=>{
+      vids[i].muted=true;
+      muted=true;
+      mute.textContent='🔇';
+      vids[i].play().catch(()=>{});
+    });
+  };
+
+  if(vids[i].readyState>=2) playCurrent();
+  else vids[i].addEventListener('canplay',playCurrent,{once:true});
+
   preload(i+1);
   preload(i-1);
+
+  // Every 5th video gets a visual 4-second Watch More overlay.
+  startThreeSecondPause(i);
 
   hint.classList.add('hidden');
 }
 
+
 function go(i){
-  if(i<0||i>=urls.length||locked) return;
+  if(i<0||i>=urls.length) return;
 
   current=i;
   feed.scrollTo({
@@ -774,15 +780,7 @@ feed.addEventListener('scroll',()=>{
       Math.round(feed.scrollTop/feed.clientHeight)
     ));
 
-    if(locked){
-      feed.scrollTo({
-        top:current*feed.clientHeight,
-        behavior:'auto'
-      });
-      return;
-    }
-
-    if(i===current) return;
+        if(i===current) return;
     activate(i);
   },80);
 },{passive:true});
