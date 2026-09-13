@@ -524,6 +524,7 @@
     let startX = 0;
     let dragging = false;
     let changing = false;
+    let loadToken = 0;
     let unlocked = true;
     let normalFeed = true;
 
@@ -532,10 +533,11 @@
     }
 
     function updateTrack(animate = true) {
-      track.style.transition = animate
-        ? "transform 420ms cubic-bezier(.22,.61,.36,1)"
-        : "none";
-      track.style.transform = "translate3d(0," + (-currentIndex * window.innerHeight) + "px,0)";
+      // There is only ONE video element for fast loading.
+      // Do not move the track itself, otherwise the video would slide
+      // completely off-screen and the next video would look black.
+      track.style.transition = "none";
+      track.style.transform = "none";
     }
 
     function setGate(locked) {
@@ -544,6 +546,7 @@
     }
 
     function loadCurrentVideo(tryUnmuted = true) {
+      const myToken = ++loadToken;
       changing = true;
       loading.classList.remove("hidden");
       errorBox.style.display = "none";
@@ -570,8 +573,8 @@
       }
 
       setTimeout(() => {
-        changing = false;
-      }, 100);
+        if (myToken === loadToken) changing = false;
+      }, 150);
     }
 
     function goTo(index, animate = true) {
