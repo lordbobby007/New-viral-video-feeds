@@ -7,6 +7,34 @@
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;font-family:Arial,sans-serif}
+#topButtons{
+  position:fixed;
+  z-index:2500;
+  top:calc(env(safe-area-inset-top) + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  padding:4px;
+  border-radius:24px;
+  background:rgba(0,0,0,.28);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.category{
+  border:0;
+  border-radius:20px;
+  padding:8px 15px;
+  color:#fff;
+  background:transparent;
+  font-size:14px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.category.active{
+  background:#fff;
+  color:#000;
+}
 #feed{
   width:100%;height:100vh;overflow-y:auto;overflow-x:hidden;
   scroll-snap-type:y mandatory;scroll-snap-stop:always;
@@ -74,6 +102,10 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000;font-f
 </head>
 <body>
 
+<div id="topButtons">
+  <button class="category active" type="button">Desi Videos</button>
+  <button class="category" type="button">English Videos</button>
+</div>
 <div id="feed"></div>
 <div id="brand">Viral Feeds</div>
 <div id="swipeHint"><span class="swipe-arrow">↑</span><span>Swipe up to watch more</span></div>
@@ -383,6 +415,18 @@ for(let i=0;i<shuffled.length;i++){
 
 const feed=document.getElementById('feed');
 const mute=document.getElementById('mute');
+const categoryButtons=document.querySelectorAll('.category');
+
+categoryButtons.forEach(button=>{
+  button.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    categoryButtons.forEach(b=>b.classList.remove('active'));
+    button.classList.add('active');
+  });
+});
+
+
 
 let current=0;
 let muted=true;
