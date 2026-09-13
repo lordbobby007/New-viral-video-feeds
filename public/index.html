@@ -657,19 +657,21 @@
       }
     });
 
-    // Touch swipe with smooth vertical slide.
-    app.addEventListener("touchstart", (e) => {
+    // Strong phone swipe handler.
+    // Listen on document capture so the swipe is detected even when
+    // the video element or overlay is under the finger.
+    document.addEventListener("touchstart", (e) => {
       if (!e.touches.length) return;
       startY = e.touches[0].clientY;
       startX = e.touches[0].clientX;
       dragging = false;
-    }, { passive: true });
+    }, { passive: true, capture: true });
 
-    app.addEventListener("touchmove", () => {
+    document.addEventListener("touchmove", () => {
       dragging = true;
-    }, { passive: true });
+    }, { passive: true, capture: true });
 
-    app.addEventListener("touchend", (e) => {
+    document.addEventListener("touchend", (e) => {
       if (!e.changedTouches.length) return;
 
       const endY = e.changedTouches[0].clientY;
@@ -677,9 +679,9 @@
       const dy = endY - startY;
       const dx = endX - startX;
 
-      if (!dragging || Math.abs(dy) < 60 || Math.abs(dy) <= Math.abs(dx)) return;
+      if (!dragging || Math.abs(dy) < 45 || Math.abs(dy) <= Math.abs(dx)) return;
 
-      // At the gate, absolutely no scrolling until Watch more.
+      // Locked only while Watch More is visible.
       if (!unlocked) return;
 
       if (dy < 0 && currentIndex < videoUrls.length - 1) {
@@ -689,7 +691,7 @@
       }
 
       swipe.classList.add("hidden");
-    }, { passive: true });
+    }, { passive: true, capture: true });
 
     // Mouse wheel / trackpad.
     let wheelLock = false;
