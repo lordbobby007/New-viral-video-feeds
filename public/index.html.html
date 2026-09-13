@@ -21,16 +21,21 @@
       color: #fff;
       font-family: Arial, sans-serif;
       overflow: hidden;
+      overscroll-behavior: none;
     }
 
     .feed {
       width: 100%;
       height: 100vh;
       height: 100dvh;
-      overflow-y: auto;
+      overflow-y: scroll;
+      overflow-x: hidden;
       scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
       scrollbar-width: none;
       background: #000;
+      overscroll-behavior-y: contain;
     }
 
     .feed::-webkit-scrollbar { display: none; }
@@ -40,10 +45,13 @@
       width: 100%;
       height: 100vh;
       height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
       scroll-snap-align: start;
       scroll-snap-stop: always;
       background: #000;
       overflow: hidden;
+      touch-action: pan-y;
     }
 
     video {
@@ -52,6 +60,7 @@
       object-fit: cover;
       display: block;
       background: #000;
+      touch-action: pan-y;
     }
 
     .topbar {
@@ -81,6 +90,7 @@
       bottom: 28px;
       padding-bottom: env(safe-area-inset-bottom);
       text-shadow: 0 1px 5px #000;
+      pointer-events: none;
     }
 
     .info h2 {
@@ -118,6 +128,7 @@
       display: grid;
       place-items: center;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     button:active { transform: scale(.94); }
@@ -166,103 +177,42 @@
   </div>
 
   <main class="feed" id="feed">
-
     <section class="video-card">
-      <video
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
-      <div class="info">
-        <h2>A little moment worth watching 🌸</h2>
-        <p>Watch, swipe and discover something new.</p>
-      </div>
-      <div class="controls">
-        <button class="sound" aria-label="Unmute">🔇</button>
-        <button class="play" aria-label="Pause">❚❚</button>
-      </div>
+      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="info"><h2>A little moment worth watching 🌸</h2><p>Watch, swipe and discover something new.</p></div>
+      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
     </section>
 
     <section class="video-card">
-      <video
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
-      <div class="info">
-        <h2>Relax and keep scrolling ✨</h2>
-        <p>Enjoy the next short video.</p>
-      </div>
-      <div class="controls">
-        <button class="sound" aria-label="Unmute">🔇</button>
-        <button class="play" aria-label="Pause">❚❚</button>
-      </div>
+      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="info"><h2>Relax and keep scrolling ✨</h2><p>Enjoy the next short video.</p></div>
+      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
     </section>
 
     <section class="video-card">
-      <video
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
-      <div class="info">
-        <h2>Discover something new 👀</h2>
-        <p>Keep scrolling to see the next short.</p>
-      </div>
-      <div class="controls">
-        <button class="sound" aria-label="Unmute">🔇</button>
-        <button class="play" aria-label="Pause">❚❚</button>
-      </div>
+      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="info"><h2>Discover something new 👀</h2><p>Keep scrolling to see the next short.</p></div>
+      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
     </section>
 
     <section class="video-card">
-      <video
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
-      <div class="info">
-        <h2>Watch. Swipe. Repeat. 🔥</h2>
-        <p>One video at a time, just keep scrolling.</p>
-      </div>
-      <div class="controls">
-        <button class="sound" aria-label="Unmute">🔇</button>
-        <button class="play" aria-label="Pause">❚❚</button>
-      </div>
+      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="info"><h2>Watch. Swipe. Repeat. 🔥</h2><p>One video at a time, just keep scrolling.</p></div>
+      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
     </section>
 
     <section class="video-card">
-      <video
-        src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
-      <div class="info">
-        <h2>One more video 🎬</h2>
-        <p>Keep scrolling to see the next short.</p>
-      </div>
-      <div class="controls">
-        <button class="sound" aria-label="Unmute">🔇</button>
-        <button class="play" aria-label="Pause">❚❚</button>
-      </div>
+      <video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="info"><h2>One more video 🎬</h2><p>Keep scrolling to see the next short.</p></div>
+      <div class="controls"><button class="sound" aria-label="Unmute">🔇</button><button class="play" aria-label="Pause">❚❚</button></div>
     </section>
-
   </main>
 
   <div class="hint" id="hint">Swipe up for the next video</div>
 
   <script>
-    const cards = document.querySelectorAll(".video-card");
+    const feed = document.getElementById("feed");
+    const cards = Array.from(document.querySelectorAll(".video-card"));
     const loading = document.getElementById("loading");
     const hint = document.getElementById("hint");
 
@@ -276,8 +226,7 @@
     function pauseAllExcept(activeCard) {
       cards.forEach(card => {
         if (card !== activeCard) {
-          const video = card.querySelector("video");
-          video.pause();
+          card.querySelector("video").pause();
           updatePlayButton(card);
         }
       });
@@ -288,22 +237,18 @@
       const soundButton = card.querySelector(".sound");
       const playButton = card.querySelector(".play");
 
-      video.addEventListener("loadeddata", () => {
-        loading.classList.add("hide");
-      });
-
+      video.addEventListener("loadeddata", () => loading.classList.add("hide"));
       video.addEventListener("play", () => updatePlayButton(card));
       video.addEventListener("pause", () => updatePlayButton(card));
 
-      soundButton.addEventListener("click", (event) => {
-        event.stopPropagation();
+      soundButton.addEventListener("click", e => {
+        e.stopPropagation();
         video.muted = !video.muted;
         soundButton.textContent = video.muted ? "🔇" : "🔊";
-        soundButton.setAttribute("aria-label", video.muted ? "Unmute" : "Mute");
       });
 
-      playButton.addEventListener("click", (event) => {
-        event.stopPropagation();
+      playButton.addEventListener("click", e => {
+        e.stopPropagation();
         if (video.paused) {
           pauseAllExcept(card);
           video.play().catch(() => {});
@@ -322,7 +267,48 @@
       });
     });
 
-    const observer = new IntersectionObserver((entries) => {
+    // Reliable phone swipe: move exactly one video per upward/downward swipe.
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    let swipeLocked = false;
+
+    feed.addEventListener("touchstart", e => {
+      if (!e.touches.length) return;
+      touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+      swipeLocked = false;
+    }, { passive: true });
+
+    feed.addEventListener("touchend", e => {
+      if (!e.changedTouches.length || swipeLocked) return;
+
+      const endY = e.changedTouches[0].clientY;
+      const endX = e.changedTouches[0].clientX;
+      const dy = endY - touchStartY;
+      const dx = endX - touchStartX;
+      const elapsed = Date.now() - touchStartTime;
+
+      if (elapsed > 900 || Math.abs(dy) < 55 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
+
+      swipeLocked = true;
+
+      const currentIndex = Math.max(0, Math.min(
+        cards.length - 1,
+        Math.round(feed.scrollTop / feed.clientHeight)
+      ));
+
+      const nextIndex = dy < 0
+        ? Math.min(currentIndex + 1, cards.length - 1)
+        : Math.max(currentIndex - 1, 0);
+
+      if (nextIndex !== currentIndex) {
+        cards[nextIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, { passive: true });
+
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         const card = entry.target;
         const video = card.querySelector("video");
@@ -330,8 +316,7 @@
         if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
           pauseAllExcept(card);
           video.muted = true;
-          const soundButton = card.querySelector(".sound");
-          soundButton.textContent = "🔇";
+          card.querySelector(".sound").textContent = "🔇";
           video.play().catch(() => {});
         } else {
           video.pause();
