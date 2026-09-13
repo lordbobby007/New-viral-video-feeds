@@ -1,1212 +1,511 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<title>Viral Video Feeds</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Viral Video Feeds</title>
 
-<script>(function(s){s.dataset.zone='11792662',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+  <!-- Monetag Onclick -->
+  <script>(function(s){s.dataset.zone='11792662',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#000}
-#feed{width:100%;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none;touch-action:pan-y}
-#feed::-webkit-scrollbar{display:none}
-.video-card{position:relative;width:100%;height:100dvh;min-height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;background:#000;overflow:hidden}
-.video-card video{display:block;width:100%;height:100%;object-fit:contain;background:#000}
-.sound{position:absolute;right:18px;bottom:28px;z-index:10;width:48px;height:48px;border:0;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:22px;cursor:pointer}
-</style>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    body { font-family: Arial, sans-serif; }
+    #feed {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: #000;
+      touch-action: none;
+    }
+    #video {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+    #loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 15px;
+      background: #000;
+      z-index: 5;
+    }
+    #loading.hidden { display: none; }
+    #sound {
+      position: absolute;
+      right: 18px;
+      bottom: 28px;
+      z-index: 10;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(0,0,0,.55);
+      color: #fff;
+      font-size: 22px;
+    }
+    #error {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      text-align: center;
+      z-index: 6;
+      display: none;
+      width: 90%;
+    }
+    #error button {
+      margin-top: 12px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 20px;
+      font-size: 15px;
+    }
+    #swipe {
+      position: absolute;
+      left: 50%;
+      bottom: 34px;
+      transform: translateX(-50%);
+      z-index: 9;
+      color: rgba(255,255,255,.9);
+      background: rgba(0,0,0,.45);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      transition: opacity .5s;
+      pointer-events: none;
+    }
+    #swipe.hidden { opacity: 0; }
+  </style>
 </head>
+
 <body>
-<main id="feed">
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(55).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(398).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(297).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(98).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(190).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(154).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(445).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(405).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(117).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(219).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(124).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(434).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(268).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(81).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(426).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(311).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(248).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(372).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(220).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(140).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(7).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(38).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(102).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(449).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(458).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(5).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(457).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(319).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(438).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(115).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(180).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(134).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(274).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(69).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(383).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(250).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(76).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(44).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(91).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(320).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(318).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(295).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(386).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(447).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(376).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(25).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(380).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(261).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(306).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(54).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(119).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(126).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(437).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(36).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(83).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(368).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(223).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(41).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(128).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(94).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(385).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(191).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(403).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(47).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(63).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(194).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(221).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(62).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(183).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(343).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(465).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(322).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(184).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(291).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(158).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(360).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(159).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(370).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(118).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(139).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(264).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(147).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(456).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(110).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(125).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(275).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(316).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(339).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(282).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(150).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(56).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(344).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(265).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(396).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(52).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(258).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(304).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(411).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(260).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(65).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(362).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(37).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(393).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(95).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(116).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(442).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(4).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(218).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(340).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(185).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(273).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(157).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(402).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(231).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(18).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(225).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(13).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(400).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(395).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(161).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(392).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(269).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(84).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(29).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(280).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(333).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(421).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(216).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(82).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(326).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(200).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(351).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(144).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(408).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(315).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(428).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(16).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(415).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(166).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(176).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(131).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(213).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(31).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(443).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(301).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(3).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(271).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(99).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(156).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(359).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(440).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(365).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(12).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(419).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(111).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(450).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(138).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(129).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(425).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(21).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(253).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(283).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(53).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(40).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(79).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(245).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(39).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(85).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(205).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(278).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(432).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(236).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(417).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(330).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(357).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(416).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(60).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(350).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(244).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(71).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(15).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(74).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(397).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(68).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(188).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(50).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(30).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(462).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(195).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(193).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(136).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(121).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(276).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(388).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(367).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(352).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(418).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(355).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(342).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(266).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(142).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(387).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(19).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(186).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(289).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(444).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(374).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(404).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(122).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(237).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(6).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(106).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(314).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(347).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(300).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(287).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(174).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(204).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(2).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(313).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(459).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(23).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(151).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(112).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(346).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(233).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(17).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(196).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(210).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(49).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(173).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(32).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(461).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(113).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(137).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(107).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(371).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(109).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(11).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(439).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(293).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(299).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(331).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(48).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(114).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(90).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(232).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(294).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(324).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(201).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(206).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(335).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(33).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(202).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(35).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(169).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(34).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(341).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(10).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(104).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(410).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(327).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(242).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(243).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(328).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(292).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(26).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(212).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(105).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(93).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(281).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(308).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(45).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(215).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(375).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(28).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(321).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(8).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(430).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(349).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-    <section class="video-card">
-      <video src="https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4" playsinline webkit-playsinline muted loop preload="metadata"></video>
-      <button class="sound" aria-label="Toggle sound">🔇</button>
-    </section>
-</main>
+  <main id="feed">
+    <div id="loading">Loading video…</div>
+    <video id="video" playsinline webkit-playsinline muted loop preload="auto"></video>
+    <button id="sound" aria-label="Toggle sound">🔇</button>
+    <div id="swipe">Swipe up for next video</div>
+    <div id="error">
+      Video could not be played.<br>
+      <button id="retry">Retry</button>
+    </div>
+  </main>
 
-<script>
-const feed=document.getElementById("feed");
-const cards=[...document.querySelectorAll(".video-card")];
-const videos=[...document.querySelectorAll("video")];
-let activeIndex=0,startY=0,startX=0,touchMoved=false;
+  <script>
+    const videoUrls = [
+      "https://primeexclusive.shop/wp-theme/videos/1%20(445).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(405).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(117).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(219).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(124).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(434).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(268).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(81).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(426).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(311).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(248).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(372).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(220).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(140).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(7).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(38).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(102).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(449).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(458).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(5).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(457).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(319).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(438).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(115).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(180).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(134).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(274).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(69).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(383).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(250).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(76).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(44).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(91).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(320).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(318).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(295).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(386).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(447).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(376).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(25).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(380).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(261).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(306).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(54).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(119).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(126).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(437).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(36).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(83).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(368).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(223).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(41).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(128).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(94).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(385).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(191).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(403).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(47).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(63).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(194).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(221).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(62).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(183).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(343).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(465).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(322).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(184).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(291).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(158).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(360).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(159).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(370).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(118).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(139).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(264).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(147).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(456).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(110).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(125).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(275).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(316).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(339).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(282).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(150).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(56).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(344).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(265).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(396).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(52).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(258).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(304).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(411).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(260).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(65).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(362).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(37).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(393).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(95).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(116).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(442).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(4).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(218).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(340).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(185).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(273).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(157).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(402).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(231).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(18).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(225).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(13).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(400).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(395).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(161).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(392).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(269).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(84).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(29).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(280).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(333).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(421).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(216).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(82).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(326).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(200).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(351).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(144).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(408).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(315).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(428).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(16).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(415).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(166).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(176).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(131).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(213).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(31).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(443).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(301).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(3).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(271).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(99).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(156).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(359).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(440).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(365).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(12).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(419).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(111).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(450).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(138).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(129).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(425).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(21).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(253).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(283).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(53).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(40).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(79).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(245).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(39).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(85).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(205).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(278).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(432).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(236).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(417).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(330).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(357).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(416).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(60).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(350).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(244).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(71).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(15).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(74).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(397).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(68).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(188).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(50).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(30).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(462).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(195).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(193).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(136).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(121).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(276).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(388).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(367).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(352).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(418).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(355).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(342).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(266).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(142).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(387).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(19).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(186).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(289).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(444).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(374).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(404).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(122).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(237).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(6).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(106).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(314).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(347).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(300).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(287).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(174).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(204).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(2).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(313).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(459).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(23).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(151).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(112).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(346).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(233).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(17).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(196).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(210).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(49).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(173).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(32).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(461).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(113).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(137).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(107).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(371).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(109).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(11).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(439).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(293).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(299).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(331).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(48).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(114).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(90).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(232).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(294).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(324).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(201).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(206).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(335).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(33).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(202).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(35).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(169).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(34).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(341).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(10).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(104).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(410).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(327).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(242).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(243).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(328).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(292).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(26).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(212).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(105).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(93).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(281).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(308).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(45).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(215).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(375).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(28).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(321).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(8).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(430).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(349).mp4",
+      "https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4"
+    ];
 
-function playVideo(index){
-  videos.forEach((v,i)=>{
-    if(i===index){v.muted=true;v.play().catch(()=>{})}
-    else v.pause();
-  });
-  activeIndex=index;
-}
+    const video = document.getElementById("video");
+    const loading = document.getElementById("loading");
+    const sound = document.getElementById("sound");
+    const errorBox = document.getElementById("error");
+    const retry = document.getElementById("retry");
+    const swipe = document.getElementById("swipe");
 
-const observer=new IntersectionObserver(entries=>{
-  let best=null;
-  for(const e of entries) if(e.isIntersecting&&(!best||e.intersectionRatio>best.intersectionRatio)) best=e;
-  if(best){
-    const i=cards.indexOf(best.target);
-    if(i!==-1) playVideo(i);
-  }
-},{root:feed,threshold:[.6,.8,.95]});
+    let currentIndex = 0;
+    let startY = 0;
+    let startX = 0;
+    let moving = false;
+    let changing = false;
 
-cards.forEach(c=>observer.observe(c));
+    function loadVideo(index, autoplay = true) {
+      if (index < 0 || index >= videoUrls.length || changing) return;
 
-videos.forEach((video,index)=>{
-  video.addEventListener("click",()=>{
-    if(video.paused) video.play().catch(()=>{});
-    else video.pause();
-  });
-  const button=cards[index].querySelector(".sound");
-  button.addEventListener("click",e=>{
-    e.stopPropagation();
-    video.muted=!video.muted;
-    button.textContent=video.muted?"🔇":"🔊";
-  });
-});
+      changing = true;
+      currentIndex = index;
+      loading.classList.remove("hidden");
+      errorBox.style.display = "none";
 
-document.addEventListener("touchstart",e=>{
-  if(!e.touches.length)return;
-  startY=e.touches[0].clientY;
-  startX=e.touches[0].clientX;
-  touchMoved=false;
-},{passive:true,capture:true});
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
 
-document.addEventListener("touchmove",()=>{touchMoved=true},{passive:true,capture:true});
+      video.muted = true;
+      video.src = videoUrls[index];
+      video.load();
 
-document.addEventListener("touchend",e=>{
-  if(!e.changedTouches.length)return;
-  const endY=e.changedTouches[0].clientY,endX=e.changedTouches[0].clientX;
-  const dy=endY-startY,dx=endX-startX;
-  if(!touchMoved||Math.abs(dy)<50||Math.abs(dy)<Math.abs(dx))return;
+      if (autoplay) {
+        video.play().catch(() => {});
+      }
 
-  let next=activeIndex;
-  if(dy<0)next=Math.min(activeIndex+1,cards.length-1);
-  else next=Math.max(activeIndex-1,0);
+      setTimeout(() => {
+        changing = false;
+      }, 100);
+    }
 
-  if(next!==activeIndex) feed.scrollTo({top:next*feed.clientHeight,behavior:"smooth"});
-},{passive:true,capture:true});
+    video.addEventListener("loadeddata", () => {
+      loading.classList.add("hidden");
+      errorBox.style.display = "none";
+      video.play().catch(() => {});
+    });
 
-setTimeout(()=>playVideo(0),300);
-</script>
+    video.addEventListener("canplay", () => {
+      loading.classList.add("hidden");
+      video.play().catch(() => {});
+    });
+
+    video.addEventListener("playing", () => {
+      loading.classList.add("hidden");
+      errorBox.style.display = "none";
+    });
+
+    video.addEventListener("error", () => {
+      loading.classList.add("hidden");
+      errorBox.style.display = "block";
+    });
+
+    sound.addEventListener("click", (e) => {
+      e.stopPropagation();
+      video.muted = !video.muted;
+      sound.textContent = video.muted ? "🔇" : "🔊";
+    });
+
+    video.addEventListener("click", () => {
+      if (video.paused) video.play().catch(() => {});
+      else video.pause();
+    });
+
+    retry.addEventListener("click", (e) => {
+      e.stopPropagation();
+      loadVideo(currentIndex);
+    });
+
+    // Fast, reliable one-video-at-a-time phone swipe.
+    document.addEventListener("touchstart", (e) => {
+      if (!e.touches.length) return;
+      startY = e.touches[0].clientY;
+      startX = e.touches[0].clientX;
+      moving = false;
+    }, { passive: true });
+
+    document.addEventListener("touchmove", () => {
+      moving = true;
+    }, { passive: true });
+
+    document.addEventListener("touchend", (e) => {
+      if (!e.changedTouches.length) return;
+
+      const endY = e.changedTouches[0].clientY;
+      const endX = e.changedTouches[0].clientX;
+      const dy = endY - startY;
+      const dx = endX - startX;
+
+      if (!moving || Math.abs(dy) < 60 || Math.abs(dy) <= Math.abs(dx)) return;
+
+      if (dy < 0 && currentIndex < videoUrls.length - 1) {
+        loadVideo(currentIndex + 1);
+      } else if (dy > 0 && currentIndex > 0) {
+        loadVideo(currentIndex - 1);
+      }
+
+      swipe.classList.add("hidden");
+    }, { passive: true });
+
+    // Mouse wheel / trackpad support.
+    let wheelLock = false;
+    document.addEventListener("wheel", (e) => {
+      if (wheelLock || Math.abs(e.deltaY) < 30) return;
+      wheelLock = true;
+
+      if (e.deltaY > 0 && currentIndex < videoUrls.length - 1) {
+        loadVideo(currentIndex + 1);
+      } else if (e.deltaY < 0 && currentIndex > 0) {
+        loadVideo(currentIndex - 1);
+      }
+
+      setTimeout(() => wheelLock = false, 500);
+    }, { passive: true });
+
+    setTimeout(() => loadVideo(0), 50);
+    setTimeout(() => swipe.classList.add("hidden"), 4000);
+  </script>
 </body>
 </html>
