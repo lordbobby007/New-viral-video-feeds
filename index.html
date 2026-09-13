@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000">
+<meta name="description" content="Watch short videos in a simple vertical feed.">
+<title>Viral Video Feeds</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#000;color:#fff;font-family:Arial,sans-serif;overflow:hidden}
+.feed{height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none}
+.feed::-webkit-scrollbar{display:none}
+.card{position:relative;height:100dvh;min-height:100dvh;scroll-snap-align:start;overflow:hidden;background:#000}
+.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(#0005,transparent 28%),linear-gradient(transparent 48%,#000b)}
+.top{position:fixed;z-index:10;top:0;left:0;right:0;height:60px;display:flex;align-items:center;justify-content:center;background:linear-gradient(#0008,transparent);pointer-events:none}
+.brand{font-weight:700;font-size:18px}
+.info{position:absolute;z-index:2;left:18px;right:80px;bottom:28px}.info h2{margin:0 0 8px;font-size:19px}.info p{margin:0;font-size:14px;line-height:1.4}
+.controls{position:absolute;z-index:3;right:14px;bottom:24px;display:flex;flex-direction:column;gap:12px}
+button{width:48px;height:48px;border:0;border-radius:50%;background:#0009;color:#fff;font-size:20px;cursor:pointer}
+.hint{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);padding:11px 16px;border-radius:24px;background:#0009;font-size:14px;opacity:0;transition:.2s;pointer-events:none;white-space:nowrap}
+.card.show .hint{opacity:1}
+.loading{position:fixed;z-index:30;inset:0;display:flex;align-items:center;justify-content:center;background:#000;transition:.3s}
+.loading.hide{opacity:0;pointer-events:none}
+@media(min-width:700px){.feed{width:min(520px,100%);margin:auto}.top{left:50%;right:auto;width:min(520px,100%);transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+<div id="loading" class="loading">Loading videos…</div>
+<div class="top"><div class="brand">Viral Video Feeds</div></div>
+<main id="feed" class="feed">
+<section class="card"><video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video><div class="shade"></div><div class="info"><h2>A little moment worth watching 🌸</h2><p>Enjoy the video and swipe up for the next one.</p></div><div class="controls"><button class="sound">🔇</button><button class="play">▶</button></div><div class="hint">Tap to pause • Tap 🔇 for sound</div></section>
+<section class="card"><video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video><div class="shade"></div><div class="info"><h2>Relax and keep scrolling ✨</h2><p>Short videos, one video at a time.</p></div><div class="controls"><button class="sound">🔇</button><button class="play">▶</button></div><div class="hint">Tap to pause • Tap 🔇 for sound</div></section>
+<section class="card"><video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video><div class="shade"></div><div class="info"><h2>Discover something new 👀</h2><p>Swipe upward to continue watching.</p></div><div class="controls"><button class="sound">🔇</button><button class="play">▶</button></div><div class="hint">Tap to pause • Tap 🔇 for sound</div></section>
+<section class="card"><video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video><div class="shade"></div><div class="info"><h2>Watch. Swipe. Repeat. 🔥</h2><p>A clean vertical short-video experience.</p></div><div class="controls"><button class="sound">🔇</button><button class="play">▶</button></div><div class="hint">Tap to pause • Tap 🔇 for sound</div></section>
+<section class="card"><video src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" muted loop playsinline preload="metadata"></video><div class="shade"></div><div class="info"><h2>One more video 🎬</h2><p>Keep scrolling to see the next short.</p></div><div class="controls"><button class="sound">🔇</button><button class="play">▶</button></div><div class="hint">Tap to pause • Tap 🔇 for sound</div></section>
+</main>
+<script>
+const cards=[...document.querySelectorAll(".card")], videos=cards.map(c=>c.querySelector("video"));
+function pauseOthers(v){videos.forEach(x=>{if(x!==v)x.pause()})}
+function update(c){const v=c.querySelector("video");c.querySelector(".play").textContent=v.paused?"▶":"❚❚";c.querySelector(".sound").textContent=v.muted?"🔇":"🔊"}
+cards.forEach(c=>{
+ const v=c.querySelector("video"),s=c.querySelector(".sound"),p=c.querySelector(".play");
+ s.onclick=e=>{e.stopPropagation();v.muted=!v.muted;pauseOthers(v);v.play().catch(()=>{});update(c)};
+ p.onclick=e=>{e.stopPropagation();if(v.paused){pauseOthers(v);v.play().catch(()=>{})}else v.pause();update(c)};
+ v.onclick=()=>{if(v.paused){pauseOthers(v);v.play().catch(()=>{})}else v.pause();update(c)};
+ v.onplay=v.onpause=()=>update(c);v.onvolumechange=()=>update(c);update(c);
+});
+const io=new IntersectionObserver(es=>es.forEach(e=>{const c=e.target,v=c.querySelector("video");if(e.isIntersecting&&e.intersectionRatio>=.65){pauseOthers(v);v.play().catch(()=>{})}else v.pause();update(c)}),{threshold:.65});
+cards.forEach(c=>io.observe(c));
+addEventListener("load",()=>{document.querySelector("#loading").classList.add("hide");videos[0].play().catch(()=>{});setTimeout(()=>{cards[0].classList.add("show");setTimeout(()=>cards[0].classList.remove("show"),2200)},700)});
+</script>
+</body>
+</html>
