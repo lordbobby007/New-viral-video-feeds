@@ -312,7 +312,7 @@ body{font-family:Arial,sans-serif}
 <div id="gate">
  <div class="box">
   <h2>Watch more</h2>
-  <p>Watch More will appear for 3 seconds.</p>
+  <p>Click Watch More to Watch more videos</p>
   <button id="watch">Watch More</button>
  </div>
 </div>
@@ -642,54 +642,41 @@ function loadVideo(i, autoplay=true){
   const v=vids[i];
   if(!v) return;
 
-  status.classList.remove('hidden');
-
-  if(v.dataset.loaded !== '1'){
+  if(v.dataset.loaded!=='1'){
     v.src=urls[i];
-    v.load();
     v.dataset.loaded='1';
+    v.load();
   }
 
   v.muted=muted;
   v.loop=true;
   v.playsInline=true;
 
-  const play=()=>{
-    if(!autoplay || locked){
-      status.classList.add('hidden');
-      return;
-    }
+  if(!autoplay || locked) return;
 
-    const promise=v.play();
-    if(promise){
-      promise.then(()=>status.classList.add('hidden')).catch(()=>{
+  const playNow=()=>{
+    if(locked || current!==i) return;
+    v.muted=muted;
+    const p=v.play();
+    if(p && typeof p.catch==='function'){
+      p.catch(()=>{
+        // Retry muted. This is allowed by mobile autoplay policies.
         v.muted=true;
         muted=true;
         mute.textContent='🔇';
-        if(!locked){
-          v.play().then(()=>status.classList.add('hidden'))
-                 .catch(()=>status.classList.add('hidden'));
-        }else{
-          status.classList.add('hidden');
-        }
+        v.play().catch(()=>{});
       });
-    }else{
-      status.classList.add('hidden');
     }
   };
 
-  if(v.readyState>=2) play();
-  else {
-    const ready=()=>{
-      v.removeEventListener('canplay',ready);
-      play();
-    };
-    v.addEventListener('canplay',ready);
-    setTimeout(()=>{
-      if(v.readyState<2) status.classList.add('hidden');
-    },5000);
+  if(v.readyState>=2) {
+    playNow();
+  } else {
+    v.addEventListener('canplay',playNow,{once:true});
+    v.addEventListener('loadeddata',playNow,{once:true});
   }
 }
+
 
 function preload(i){
   if(i<0||i>=urls.length) return;
@@ -708,21 +695,41 @@ function startThreeSecondPause(i){
   if(pauseTimer) clearTimeout(pauseTimer);
 
   const v=vids[i];
-  stop(v);
 
-  // Pause the screen and show Watch More for exactly 3 seconds.
+  // Stop the fifth video while the 2-second Watch More overlay is shown.
+  try{v.pause()}catch(e){}
+
   gateOn();
 
   pauseTimer=setTimeout(()=>{
     pauseTimer=null;
     gateOff();
 
-    // Resume the same video normally.
     if(current===i){
-      loadVideo(i,true);
+      v.muted=muted;
+      v.loop=true;
+      v.playsInline=true;
+
+      // Explicitly resume the SAME video after the overlay disappears.
+      const resume=()=>{
+        if(current!==i) return;
+        const p=v.play();
+        if(p && typeof p.catch==='function'){
+          p.catch(()=>{
+            v.muted=true;
+            muted=true;
+            mute.textContent='🔇';
+            v.play().catch(()=>{});
+          });
+        }
+      };
+
+      if(v.readyState>=2) resume();
+      else v.addEventListener('canplay',resume,{once:true});
     }
-  },3000);
+  },2000);
 }
+
 
 function activate(i){
   if(i<0||i>=urls.length) return;
@@ -732,9 +739,9 @@ function activate(i){
 
   if(isFifthVideo(i)){
     startThreeSecondPause(i);
+  } else {
+    loadVideo(i,true);
   }
-
-  loadVideo(i,!locked);
   preload(i+1);
   preload(i-1);
 
