@@ -318,7 +318,7 @@ body{font-family:Arial,sans-serif}
 </div>
 
 <script>
-const urls=[
+const baseUrls=[
   'https://primeexclusive.shop/wp-theme/videos/1%20(445).mp4',
   'https://primeexclusive.shop/wp-theme/videos/1%20(405).mp4',
   'https://primeexclusive.shop/wp-theme/videos/1%20(117).mp4',
@@ -596,6 +596,17 @@ const urls=[
   'https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4'
 ];
 
+function getRandomUrls(){
+  const a=[...baseUrls];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+const urls=getRandomUrls();
+
 const feed=document.getElementById('feed');
 const slides=[...document.querySelectorAll('.slide')];
 const vids=[...document.querySelectorAll('.v')];
@@ -759,6 +770,8 @@ watch.addEventListener('click',e=>{
  locked=false;
  gate.classList.remove('show');
 
+ // From this click onward the feed behaves normally again.
+ // The next Watch More checkpoint appears only after another 5 videos.
  if(next<urls.length){
    changing=false;
    current=next;
