@@ -620,10 +620,16 @@ let current=0;
 let muted=false;
 let unlockedThrough=0;
 let locked=false;
+let feedUnlocked=false;
+let nextGateAt=5;
 let changing=false;
 
-function checkpoint(i){ return i>0 && (i+1)%5===0; }
-function needsGate(i){ return checkpoint(i) && i>unlockedThrough; }
+function checkpoint(i){
+  return i >= nextGateAt && (i+1)%5===0;
+}
+function needsGate(i){
+  return !feedUnlocked && checkpoint(i);
+}
 
 function gateOn(){
  locked=true;
@@ -702,7 +708,7 @@ function activate(i){
 }
 
 function go(i){
- if(i<0||i>=urls.length||locked||changing) return;
+ if(i<0||i>=urls.length||locked) return;
  if(needsGate(i)){gateOn();return;}
 
  changing=true;
@@ -766,15 +772,19 @@ watch.addEventListener('click',e=>{
  e.stopPropagation();
 
  const next=current+1;
- unlockedThrough=Math.max(unlockedThrough,next);
+
+ // Unlock FIRST. Do not wait for the popunder to close.
+ feedUnlocked=true;
  locked=false;
  gate.classList.remove('show');
 
- // From this click onward the feed behaves normally again.
- // The next Watch More checkpoint appears only after another 5 videos.
+ // Next checkpoint is 5 videos later.
+ nextGateAt=next+5;
+
+ // Continue immediately.
  if(next<urls.length){
-   changing=false;
    current=next;
+   changing=false;
    feed.scrollTo({top:next*feed.clientHeight,behavior:'auto'});
    activate(next);
  }
