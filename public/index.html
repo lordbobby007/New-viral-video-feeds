@@ -11,141 +11,221 @@
 
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
     html, body {
-      margin: 0; padding: 0; width: 100%; height: 100%;
-      overflow: hidden; background: #000;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
       font-family: Arial, sans-serif;
     }
-    #feed {
-      position: fixed; inset: 0; width: 100%; height: 100dvh;
-      overflow: hidden; background: #000;
-      touch-action: none;
-    }
-    #video {
-      display: block; position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: contain; background: #000;
+
+    body {
+      background: #000;
     }
 
-    /* Instagram-Reels-style branding button */
+    #app {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      background: #000;
+      touch-action: none;
+    }
+
+    /* Real vertical slide track, similar to Reels/TikTok */
+    #track {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: translate3d(0, 0, 0);
+      transition: transform 420ms cubic-bezier(.22,.61,.36,1);
+      will-change: transform;
+    }
+
+    .page {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100dvh;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #video {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    #loading {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #000;
+      font-size: 15px;
+    }
+
+    #loading.hidden { display: none; }
+
     #brand {
       position: absolute;
       top: calc(env(safe-area-inset-top) + 14px);
       left: 16px;
       z-index: 20;
+      padding: 10px 16px;
       border: 0;
       border-radius: 22px;
-      padding: 10px 16px;
       color: #fff;
       background: rgba(0,0,0,.55);
       font-size: 16px;
       font-weight: 700;
-      letter-spacing: .1px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
       pointer-events: none;
     }
 
-    #loading {
-      position: absolute; inset: 0; display: flex;
-      align-items: center; justify-content: center;
-      color: #fff; font-size: 15px; background: #000; z-index: 5;
-    }
-    #loading.hidden { display: none; }
-
-    #sound {
-      position: absolute; right: 18px;
+    #mute {
+      position: absolute;
+      right: 18px;
       bottom: calc(env(safe-area-inset-bottom) + 28px);
-      z-index: 20; width: 48px; height: 48px;
-      border: 0; border-radius: 50%;
-      background: rgba(0,0,0,.55); color: #fff;
-      font-size: 22px;
+      z-index: 25;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      color: #fff;
+      background: rgba(0,0,0,.58);
+      font-size: 21px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
     }
 
-    /* Gate shown after every 5th video */
+    /* Gate */
     #gate {
-      position: absolute; inset: 0; z-index: 30;
-      display: none; align-items: center; justify-content: center;
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      align-items: center;
+      justify-content: center;
       flex-direction: column;
-      background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,.12) 55%, rgba(0,0,0,.25));
+      padding: 24px;
       text-align: center;
       color: #fff;
-      padding: 24px;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.15),
+        rgba(0,0,0,.35) 45%,
+        rgba(0,0,0,.76)
+      );
     }
+
     #gate.show { display: flex; }
 
     #gate-title {
-      font-size: 22px; font-weight: 800;
       margin-bottom: 8px;
-      text-shadow: 0 2px 8px rgba(0,0,0,.5);
+      font-size: 23px;
+      font-weight: 800;
+      text-shadow: 0 2px 10px rgba(0,0,0,.6);
     }
+
     #gate-text {
-      font-size: 14px; opacity: .9;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      opacity: .92;
     }
+
     #watchMore {
+      min-width: 190px;
+      padding: 14px 26px;
       border: 0;
       border-radius: 28px;
-      padding: 14px 26px;
-      min-width: 180px;
-      background: #fff;
       color: #111;
+      background: #fff;
       font-size: 16px;
       font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 5px 22px rgba(0,0,0,.35);
+      box-shadow: 0 7px 25px rgba(0,0,0,.4);
     }
-    #watchMore:active { transform: scale(.97); }
 
-    #error {
-      position: absolute; left: 50%; top: 50%;
-      transform: translate(-50%, -50%);
-      color: #fff; text-align: center; z-index: 40;
-      display: none; width: 90%;
-    }
-    #error button {
-      margin-top: 12px; padding: 10px 18px;
-      border: 0; border-radius: 20px; font-size: 15px;
+    #watchMore:active {
+      transform: scale(.96);
     }
 
     #swipe {
       position: absolute;
       left: 50%;
       bottom: calc(env(safe-area-inset-bottom) + 34px);
+      z-index: 12;
       transform: translateX(-50%);
-      z-index: 10;
-      color: rgba(255,255,255,.9);
-      background: rgba(0,0,0,.45);
       padding: 8px 14px;
       border-radius: 20px;
+      color: rgba(255,255,255,.92);
+      background: rgba(0,0,0,.45);
       font-size: 13px;
-      transition: opacity .5s;
       pointer-events: none;
+      transition: opacity .5s;
     }
+
     #swipe.hidden { opacity: 0; }
+
+    #error {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 40;
+      display: none;
+      width: 90%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      text-align: center;
+    }
+
+    #error button {
+      margin-top: 12px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 20px;
+    }
   </style>
 </head>
 
 <body>
-  <main id="feed">
-    <div id="loading">Loading video…</div>
-    <video id="video" playsinline webkit-playsinline muted loop preload="auto"></video>
+  <main id="app">
+    <div id="track">
+      <section class="page">
+        <video id="video"
+          playsinline
+          webkit-playsinline
+          loop
+          preload="auto"></video>
 
-    <div id="brand">Viral Videos</div>
+        <div id="loading">Loading video…</div>
+        <div id="brand">Viral Videos</div>
+        <button id="mute" aria-label="Mute video">🔊</button>
 
-    <button id="sound" aria-label="Toggle sound">🔇</button>
+        <div id="gate">
+          <div id="gate-title">Enjoying the videos?</div>
+          <div id="gate-text">Tap below to watch more viral videos.</div>
+          <button id="watchMore">Watch more</button>
+        </div>
 
-    <div id="gate">
-      <div id="gate-title">Enjoying the videos?</div>
-      <div id="gate-text">Tap below to watch more viral videos.</div>
-      <button id="watchMore">Watch more</button>
-    </div>
+        <div id="swipe">Swipe up for next video</div>
 
-    <div id="swipe">Swipe up for next video</div>
-
-    <div id="error">
-      Video could not be played.<br>
-      <button id="retry">Retry</button>
+        <div id="error">
+          Video could not be played.<br>
+          <button id="retry">Retry</button>
+        </div>
+      </section>
     </div>
   </main>
 
@@ -428,85 +508,115 @@
       'https://primeexclusive.shop/wp-theme/videos/1%20(323).mp4'
     ];
 
+    const app = document.getElementById("app");
+    const track = document.getElementById("track");
     const video = document.getElementById("video");
     const loading = document.getElementById("loading");
-    const sound = document.getElementById("sound");
+    const mute = document.getElementById("mute");
     const gate = document.getElementById("gate");
     const watchMore = document.getElementById("watchMore");
     const retry = document.getElementById("retry");
     const swipe = document.getElementById("swipe");
+    const errorBox = document.getElementById("error");
 
     let currentIndex = 0;
     let startY = 0;
     let startX = 0;
-    let moving = false;
+    let dragging = false;
     let changing = false;
     let unlocked = true;
+    let normalFeed = true;
 
-    // Lock immediately after videos 5, 10, 15, ...
-    function isGateVideo(index) {
+    function isGateIndex(index) {
       return (index + 1) % 5 === 0;
     }
 
-    function showGate() {
-      unlocked = false;
-      gate.classList.add("show");
+    function updateTrack(animate = true) {
+      track.style.transition = animate
+        ? "transform 420ms cubic-bezier(.22,.61,.36,1)"
+        : "none";
+      track.style.transform = "translate3d(0," + (-currentIndex * window.innerHeight) + "px,0)";
     }
 
-    function hideGate() {
-      unlocked = true;
-      gate.classList.remove("show");
+    function setGate(locked) {
+      unlocked = !locked;
+      gate.classList.toggle("show", locked);
     }
 
-    function loadVideo(index, autoplay = true) {
-      if (index < 0 || index >= videoUrls.length || changing) return;
-
+    function loadCurrentVideo(tryUnmuted = true) {
       changing = true;
-      currentIndex = index;
       loading.classList.remove("hidden");
-      document.getElementById("error").style.display = "none";
+      errorBox.style.display = "none";
 
       video.pause();
       video.removeAttribute("src");
       video.load();
 
-      video.muted = true;
-      video.src = videoUrls[index];
+      // Feed starts UNMUTED. If the browser blocks unmuted autoplay,
+      // we fall back to muted so the video still opens.
+      video.muted = !tryUnmuted;
+      video.src = videoUrls[currentIndex];
       video.load();
 
-      if (autoplay) video.play().catch(() => {});
+      const promise = video.play();
 
-      // The gate appears only after the 5th video has loaded.
-      if (isGateVideo(index)) showGate();
-      else hideGate();
+      if (promise) {
+        promise.catch(() => {
+          // Mobile browsers may block sound autoplay.
+          video.muted = true;
+          mute.textContent = "🔇";
+          video.play().catch(() => {});
+        });
+      }
 
-      setTimeout(() => { changing = false; }, 120);
+      setTimeout(() => {
+        changing = false;
+      }, 100);
+    }
+
+    function goTo(index, animate = true) {
+      if (index < 0 || index >= videoUrls.length || changing) return;
+      currentIndex = index;
+      updateTrack(animate);
+
+      // The 5th, 10th, 15th... video is the stopping point.
+      // The gate is only active when arriving there.
+      if (isGateIndex(currentIndex)) {
+        setGate(true);
+      } else {
+        setGate(false);
+      }
+
+      loadCurrentVideo(true);
     }
 
     video.addEventListener("loadeddata", () => {
       loading.classList.add("hidden");
-      video.play().catch(() => {});
     });
 
     video.addEventListener("canplay", () => {
       loading.classList.add("hidden");
-      video.play().catch(() => {});
     });
 
     video.addEventListener("playing", () => {
       loading.classList.add("hidden");
-      document.getElementById("error").style.display = "none";
+      errorBox.style.display = "none";
     });
 
     video.addEventListener("error", () => {
       loading.classList.add("hidden");
-      document.getElementById("error").style.display = "block";
+      errorBox.style.display = "block";
     });
 
-    sound.addEventListener("click", (e) => {
+    mute.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
       video.muted = !video.muted;
-      sound.textContent = video.muted ? "🔇" : "🔊";
+      mute.textContent = video.muted ? "🔇" : "🔊";
+
+      if (!video.paused) {
+        video.play().catch(() => {});
+      }
     });
 
     video.addEventListener("click", () => {
@@ -516,55 +626,50 @@
 
     retry.addEventListener("click", (e) => {
       e.stopPropagation();
-      loadVideo(currentIndex);
+      loadCurrentVideo(true);
     });
 
-    // IMPORTANT: this button is the user click that Monetag Onclick can use.
-    // It unlocks the next videos only after the click.
+    /*
+      WATCH MORE:
+      The important change is that the feed is unlocked permanently for
+      the next videos immediately when the user clicks. The gate itself
+      is removed before loading the next video, so it cannot remain stuck.
+      Monetag receives the genuine click through its Onclick script.
+    */
     watchMore.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
 
-      // Unlock the feed immediately on the user's genuine click.
-      // Monetag's Onclick script can handle the popunder from this same click.
       unlocked = true;
+      normalFeed = true;
       gate.classList.remove("show");
 
       const next = currentIndex + 1;
+
       if (next < videoUrls.length) {
-        // Small delay gives the Onclick script a moment to process
-        // the user's click before the next video starts.
+        currentIndex = next;
+        updateTrack(true);
+
+        // Continue unmuted after the user's click.
         setTimeout(() => {
-          loadVideo(next);
-        }, 150);
+          loadCurrentVideo(true);
+        }, 120);
       }
     });
 
-    // If the browser returns from the popunder/new tab, keep the feed unlocked.
-    window.addEventListener("focus", () => {
-      if (unlocked) gate.classList.remove("show");
-    });
-
-    document.addEventListener("visibilitychange", () => {
-      if (!document.hidden && unlocked) {
-        gate.classList.remove("show");
-        video.play().catch(() => {});
-      }
-    });
-
-    // Phone swipe.
-    document.addEventListener("touchstart", (e) => {
+    // Touch swipe with smooth vertical slide.
+    app.addEventListener("touchstart", (e) => {
       if (!e.touches.length) return;
       startY = e.touches[0].clientY;
       startX = e.touches[0].clientX;
-      moving = false;
+      dragging = false;
     }, { passive: true });
 
-    document.addEventListener("touchmove", () => {
-      moving = true;
+    app.addEventListener("touchmove", () => {
+      dragging = true;
     }, { passive: true });
 
-    document.addEventListener("touchend", (e) => {
+    app.addEventListener("touchend", (e) => {
       if (!e.changedTouches.length) return;
 
       const endY = e.changedTouches[0].clientY;
@@ -572,37 +677,51 @@
       const dy = endY - startY;
       const dx = endX - startX;
 
-      if (!moving || Math.abs(dy) < 60 || Math.abs(dy) <= Math.abs(dx)) return;
+      if (!dragging || Math.abs(dy) < 60 || Math.abs(dy) <= Math.abs(dx)) return;
 
-      // At the 5th video, scrolling is completely blocked until Watch more.
+      // At the gate, absolutely no scrolling until Watch more.
       if (!unlocked) return;
 
       if (dy < 0 && currentIndex < videoUrls.length - 1) {
-        loadVideo(currentIndex + 1);
+        goTo(currentIndex + 1, true);
       } else if (dy > 0 && currentIndex > 0) {
-        // Allow going back without opening another gate.
-        loadVideo(currentIndex - 1);
+        goTo(currentIndex - 1, true);
       }
 
       swipe.classList.add("hidden");
     }, { passive: true });
 
-    // Laptop mouse wheel.
+    // Mouse wheel / trackpad.
     let wheelLock = false;
-    document.addEventListener("wheel", (e) => {
+    app.addEventListener("wheel", (e) => {
       if (wheelLock || Math.abs(e.deltaY) < 30 || !unlocked) return;
       wheelLock = true;
 
       if (e.deltaY > 0 && currentIndex < videoUrls.length - 1) {
-        loadVideo(currentIndex + 1);
+        goTo(currentIndex + 1, true);
       } else if (e.deltaY < 0 && currentIndex > 0) {
-        loadVideo(currentIndex - 1);
+        goTo(currentIndex - 1, true);
       }
 
       setTimeout(() => wheelLock = false, 500);
     }, { passive: true });
 
-    setTimeout(() => loadVideo(0), 50);
+    // Keyboard support on laptop.
+    document.addEventListener("keydown", (e) => {
+      if (!unlocked) return;
+
+      if (e.key === "ArrowDown" && currentIndex < videoUrls.length - 1) {
+        goTo(currentIndex + 1, true);
+      } else if (e.key === "ArrowUp" && currentIndex > 0) {
+        goTo(currentIndex - 1, true);
+      }
+    });
+
+    // Keep the current slide correct after browser rotation/resize.
+    window.addEventListener("resize", () => updateTrack(false));
+
+    updateTrack(false);
+    setTimeout(() => loadCurrentVideo(true), 50);
     setTimeout(() => swipe.classList.add("hidden"), 4000);
   </script>
 </body>
