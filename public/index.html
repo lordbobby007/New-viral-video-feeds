@@ -267,22 +267,21 @@
       });
     });
 
-    // Reliable phone swipe: move exactly one video per upward/downward swipe.
+    // Mobile swipe fallback. Listen in capture phase so the swipe
+    // still works even when the video or another script receives the touch.
     let touchStartY = 0;
     let touchStartX = 0;
     let touchStartTime = 0;
-    let swipeLocked = false;
 
-    feed.addEventListener("touchstart", e => {
+    document.addEventListener("touchstart", (e) => {
       if (!e.touches.length) return;
       touchStartY = e.touches[0].clientY;
       touchStartX = e.touches[0].clientX;
       touchStartTime = Date.now();
-      swipeLocked = false;
-    }, { passive: true });
+    }, { passive: true, capture: true });
 
-    feed.addEventListener("touchend", e => {
-      if (!e.changedTouches.length || swipeLocked) return;
+    document.addEventListener("touchend", (e) => {
+      if (!e.changedTouches.length) return;
 
       const endY = e.changedTouches[0].clientY;
       const endX = e.changedTouches[0].clientX;
@@ -290,23 +289,24 @@
       const dx = endX - touchStartX;
       const elapsed = Date.now() - touchStartTime;
 
-      if (elapsed > 900 || Math.abs(dy) < 55 || Math.abs(dy) < Math.abs(dx) * 1.2) return;
+      if (elapsed > 1200 || Math.abs(dy) < 45 || Math.abs(dy) <= Math.abs(dx)) return;
 
-      swipeLocked = true;
-
-      const currentIndex = Math.max(0, Math.min(
-        cards.length - 1,
-        Math.round(feed.scrollTop / feed.clientHeight)
-      ));
+      const currentIndex = Math.max(
+        0,
+        Math.min(cards.length - 1, Math.round(feed.scrollTop / feed.clientHeight))
+      );
 
       const nextIndex = dy < 0
         ? Math.min(currentIndex + 1, cards.length - 1)
         : Math.max(currentIndex - 1, 0);
 
       if (nextIndex !== currentIndex) {
-        cards[nextIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+        feed.scrollTo({
+          top: nextIndex * feed.clientHeight,
+          behavior: "smooth"
+        });
       }
-    }, { passive: true });
+    }, { passive: true, capture: true });
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
