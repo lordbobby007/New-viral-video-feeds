@@ -307,7 +307,7 @@ body{font-family:Arial,sans-serif}
   <section class="slide" data-index="274"><video class="v" playsinline webkit-playsinline loop preload="none"></video></section>
 </div>
 <button id="mute">🔊</button>
-<div id="status">Loading…</div>
+<div id="status" aria-hidden="true" style="display:none">Loading…</div>
 <div id="hint">Swipe up for next video</div>
 <div id="gate">
  <div class="box">
@@ -660,7 +660,6 @@ function loadVideo(i, autoplay=true){
     const p=v.play();
     if(p && typeof p.catch==='function'){
       p.catch(()=>{
-        // Retry muted. This is allowed by mobile autoplay policies.
         v.muted=true;
         muted=true;
         mute.textContent='🔇';
@@ -696,7 +695,7 @@ function startThreeSecondPause(i){
 
   const v=vids[i];
 
-  // Stop the fifth video while the 2-second Watch More overlay is shown.
+  // Pause the current video while Watch More is visible.
   try{v.pause()}catch(e){}
 
   gateOn();
@@ -705,29 +704,33 @@ function startThreeSecondPause(i){
     pauseTimer=null;
     gateOff();
 
-    if(current===i){
-      v.muted=muted;
-      v.loop=true;
-      v.playsInline=true;
+    if(current!==i) return;
 
-      // Explicitly resume the SAME video after the overlay disappears.
-      const resume=()=>{
-        if(current!==i) return;
-        const p=v.play();
-        if(p && typeof p.catch==='function'){
-          p.catch(()=>{
-            v.muted=true;
-            muted=true;
-            mute.textContent='🔇';
-            v.play().catch(()=>{});
-          });
-        }
-      };
+    // Resume explicitly after the overlay disappears.
+    v.muted=muted;
+    v.loop=true;
+    v.playsInline=true;
 
-      if(v.readyState>=2) resume();
-      else v.addEventListener('canplay',resume,{once:true});
+    const resumeVideo=()=>{
+      if(current!==i) return;
+      const p=v.play();
+      if(p && typeof p.catch==='function'){
+        p.catch(()=>{
+          v.muted=true;
+          muted=true;
+          mute.textContent='🔇';
+          v.play().catch(()=>{});
+        });
+      }
+    };
+
+    if(v.readyState>=2){
+      resumeVideo();
+    }else{
+      v.addEventListener('canplay',resumeVideo,{once:true});
+      v.load();
     }
-  },2000);
+  },4000);
 }
 
 
